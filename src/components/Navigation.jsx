@@ -6,9 +6,21 @@ const Navigation = () => {
         {label: 'Home', icon: 'pi pi-fw pi-home', command: () => {
             window.location.href='/';
         }},
-        {label: 'About', icon: 'pi pi-fw pi-calendar', command: () =>{
-            window.location.href='/about'
-        }},
+        {
+            label: 'Menu', 
+            icon: 'pi pi-fw pi-calendar', 
+            // command: () =>{ window.location.href='/about' }
+            items: [
+                {
+                    label: 'Ver menu',
+                    url: '/menu'
+                },
+                {
+                    label: 'Edita menu',
+                    url: '/editaMenu'
+                }
+            ]
+        },
         { label: 'Contact', icon: 'pi pi-fw pi-phone', command: () =>{
             window.location.href='/contact'
         }}
