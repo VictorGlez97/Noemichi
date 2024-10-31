@@ -42,7 +42,7 @@ function App() {
 }
 
 const MainApp = () => (
-  <div style={{ backgroundColor: '#ffc197' }}>
+  <div>
     <BrowserRouter>
       <App />
     </BrowserRouter>
