@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
 import { Fieldset } from 'primereact/fieldset'
+import { Tooltip } from 'primereact/tooltip'
 
 import NoemichiService from '../services/noemichi';
 import NoemichiBakery from '../assets/img/noemichis.png';
@@ -35,14 +36,26 @@ export const Menu = () => {
                 <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} />
             </div>
 
+            <Tooltip target=".custom-target-icon" />
+
             <div className='flex justify-content-center'>
-                <Card className='col-8'>
+                <Card className='sm:col-12 md:col-8'>
                     <div className='p-grid'>
                         {
                             products.map(product => (
-                                <div className='flex justify-content-between' key={ product.idproduct }>
-                                    <h4> { product.description } </h4>
-                                    <h4> $ { product.price } </h4>
+                                <div 
+                                    className='flex justify-content-between custom-target-icon mb-3' 
+                                    key={ product.idproduct }
+                                    data-pr-tooltip={ product.description }
+                                    data-pr-position='top'
+                                >
+                                    <div style={{ lineHeight: '1px' }}>
+                                        <h4> { product.name } </h4>
+                                        <span> ({ product.description }) </span>
+                                    </div>
+                                    <div>
+                                        <p> $ { product.price } </p>
+                                    </div>
                                 </div>
                             ))
                         }
@@ -51,13 +64,18 @@ export const Menu = () => {
             </div>
 
             <div className='flex justify-content-center mt-3'>
-                <Fieldset legend="Pedidos" className='col-8'>
+                <Fieldset legend="Pedidos" className='sm:col-12 md:col-8'>
                 <div className='p-grid'>
                         {
                             productOrder.map(product => (
                                 <div className='flex justify-content-between' key={ product.idproduct }>
-                                    <h4> { product.description } </h4>
-                                    <h4> $ { product.price } </h4>
+                                    <div style={{ lineHeight: '1px' }}>
+                                        <h4> { product.name } </h4>
+                                        <span> ({ product.description }) </span>
+                                    </div>
+                                    <div>
+                                        <p> $ { product.price } </p>
+                                    </div>
                                 </div>
                             ))
                         }
