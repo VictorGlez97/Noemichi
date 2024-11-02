@@ -19,10 +19,12 @@ export const EditaMenu = () => {
 
     const toast = useRef(null);
 
+    const [id, setId] = useState(0);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState(0);
     const [isTypeA, setIsTypeA] = useState(false);
+    const [update, setUpdate] = useState(false);
 
     const [products, setProducts] = useState([]);
 
@@ -40,18 +42,14 @@ export const EditaMenu = () => {
     }, []);
 
     const getStatus = (data) => {
-        console.log(data);
+        // console.log(data);
         var status = data.seccion === 2 ? <Tag value="Por pedido" severity="Warning" /> : "";
         return status;
     }
 
     const getBtnEdit = (data) => {
         // console.log(data);
-        return <Button icon='pi pi-pencil' onClick={() => { Search(data.idproduct) }} />
-    }
-
-    const getBtnDel = (data) => {
-        return <Button icon='pi pi-trash' onClick={() => { delete(data.idproduct) }} />
+        return <Button icon='pi pi-pencil' size='small' text onClick={() => { getProduct(data.idproduct) }} />
     }
 
     const handleSubmit = async () => {
@@ -69,11 +67,7 @@ export const EditaMenu = () => {
             console.log( res );
 
             if ( res.status === 200 ) {
-                toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Producto guardado', life: 3000 })
-                setName('');
-                setDescription('');
-                setPrice(0);
-                setIsTypeA(false);
+                responseSuccess('Producto guardado');
                 return;
             }
 
@@ -86,13 +80,86 @@ export const EditaMenu = () => {
 
     }
 
+    const getProduct = async ( idProduct ) => {
+
+        axios.get(`https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/product/${idProduct}`)
+        .then(res => {
+            
+            console.log( res.status );
+            console.log( res.data );
+
+            if ( res.status === 200 ) {
+                if ( res.data.data.length === 1 ) {
+
+                    const product = res.data.data[0];
+
+                    setId(product.idproduct);
+                    setName(product.name);
+                    setDescription(product.description);
+                    setPrice(product.price);
+                    setIsTypeA(product.seccion === 2 ? true : false);
+                    setUpdate(true);
+
+                }
+            }
+
+        })
+        .catch(error => {
+            console.log( error );
+        })
+
+    }
+
+    const handleUpdate = async () => {
+
+        const data = {
+            name: name,
+            description: description,
+            price: price,
+            seccion: isTypeA ? 2 : 1
+        }
+
+        axios.put(`https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/product/${id}`, data)
+        .then(res => {
+
+            if ( res.status === 200 ) {
+                responseSuccess('Producto actualizado');
+                return;
+            }
+
+        })
+        .catch(error => {
+            console.log( error );
+        })
+
+    }
+
+    const handleCancel = () => {
+        setId(0);
+        setUpdate(false);
+        setUpdate(!update);
+        cleanInpts();
+    }
+
+    const responseSuccess = (msg) => {
+        toast.current.show({ severity: 'success', summary: 'Éxito', detail: msg, life: 3000 })
+        cleanInpts();
+    }
+
+    const cleanInpts = () => {
+        setName('');
+        setDescription('');
+        setPrice(0);
+        setIsTypeA(false);
+    }
+
     return (
         <div>
 
             <Toast ref={toast} />
 
             <div className='flex justify-content-center'>
-                <Card title="Nuevo pancito" className='sm:col-12 md:col-5'>
+                <Card title={ update ? 'Actualiza pancito' : 'Nuevo pancito' } className='sm:col-12 md:col-5'>
 
                     <div>
                         <div className="p-field col-12">
@@ -122,7 +189,9 @@ export const EditaMenu = () => {
                         </div>
 
                         <div className="p-field col-12 mt-2 flex justify-content-end">
-                            <Button type="submit" size='small' icon="pi pi-save" onClick={handleSubmit} > Guardar </Button>
+                            <Button type="submit" size='small' icon="pi pi-save" className='mr-2' onClick={handleSubmit} visible={!update} />
+                            <Button type='submit' size='small' icon='pi pi-times' className='mr-2' onClick={handleCancel} severity='secondary' visible={update} />
+                            <Button type='submit' size='small' icon='pi pi-save' className='mr-2' onClick={handleUpdate} visible={update} />
                         </div>
                     </div>
                 </Card>
@@ -130,7 +199,7 @@ export const EditaMenu = () => {
             
             <div className='flex justify-content-center col-12'>
                 <Card title="Pancito" className='col-12'>
-                    <DataTable value={products}>
+                    <DataTable value={products} size='small'>
                         <Column field='name' header='pancito'></Column>
                         <Column field='description' header='descripción'></Column>
                         <Column field='price' header='precio'></Column>
@@ -144,10 +213,10 @@ export const EditaMenu = () => {
                             field='idproduct'
                             body={ getBtnEdit }
                         ></Column>
-                        <Column 
+                        {/* <Column 
                             field='idproduct'
                             body={ getBtnDel }
-                        ></Column>
+                        ></Column> */}
                     </DataTable>
                 </Card>
             </div>
