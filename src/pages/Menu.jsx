@@ -4,8 +4,9 @@ import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
 import { Fieldset } from 'primereact/fieldset'
 import { Tooltip } from 'primereact/tooltip'
+import { Dialog } from 'primereact/dialog'
 
-import NoemichiService from '../services/noemichi';
+// import NoemichiService from '../services/noemichi';
 import NoemichiBakery from '../assets/img/noemichis.png';
 import axios from 'axios';
 
@@ -13,6 +14,9 @@ export const Menu = () => {
   
     const [products, setProducts] = useState([]);
     const [productOrder, setProductOrder] = useState([]);
+
+    const [modalVisible, setModalVisible] = useState(false);
+    const [image, setImage] = useState(null);
 
     useEffect(() => {
         // NoemichiService.get('product')
@@ -30,10 +34,23 @@ export const Menu = () => {
         })
     }, []);
 
+    const HandleOpenImage = ( img ) => {
+
+        if ( img == null ) {
+            return;
+        }
+
+        // const imgBuffer = new Buffer(img, 'binary');
+        // const base64Img = imgBuffer.toString('base64');
+        const base64Img = img.toString('base64');
+        setImage(`data:image/jpeg;base64,${base64Img}`);
+        setModalVisible(true);
+    }
+
     return (
         <div>
             <div className='col-12 flex justify-content-center'>
-                <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} />
+                {/* <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} /> */}
             </div>
 
             <Tooltip target=".custom-target-icon" />
@@ -49,9 +66,12 @@ export const Menu = () => {
                                     data-pr-tooltip={ product.description }
                                     data-pr-position='top'
                                 >
-                                    <div style={{ lineHeight: '1px' }}>
+                                    <div 
+                                        style={{ lineHeight: '0px' }}
+                                        onClick={() => HandleOpenImage(product.image)}
+                                    >
                                         <h4> { product.name } </h4>
-                                        <span> ({ product.description }) </span>
+                                        <span style={{ marginTop: '-1rem' }}> ({ product.description }) { product.image !== null && <i className='pi pi-image' style={{ cursor: 'pointer' }}></i>} </span>
                                     </div>
                                     <div>
                                         <p> $ { product.price } </p>
@@ -82,6 +102,13 @@ export const Menu = () => {
                     </div>
                 </Fieldset>
             </div>
+
+            <Dialog visible={modalVisible} onHide={() => setModalVisible(false)} style={{ width: '25rem' }}>
+                <div>
+                    { image !== null && <img src={image} width="100%" alt="Imagen pancito"/> }
+                </div>
+            </Dialog>
+
         </div>
     )
 }

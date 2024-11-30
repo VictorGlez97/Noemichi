@@ -6,14 +6,12 @@ import axios from 'axios';
 import { InputText } from 'primereact/inputtext';
 import { InputNumber } from 'primereact/inputnumber';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { Checkbox } from 'primereact/checkbox';
 import { Button } from 'primereact/button';
+import { Checkbox } from 'primereact/checkbox';
 import { Card } from 'primereact/card';
+import { Dialog } from 'primereact/dialog';
 import { Toast } from 'primereact/toast';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
-// import { classNames } from 'primereact/utils';
-import { Tag } from 'primereact/tag';
+import Table from '../components/editaMenu/Table';
 
 export const EditaMenu = () => {
 
@@ -26,31 +24,11 @@ export const EditaMenu = () => {
     const [isTypeA, setIsTypeA] = useState(false);
     const [update, setUpdate] = useState(false);
 
+    const [image, setImage] = useState(null);
+
     const [products, setProducts] = useState([]);
 
-    useEffect(() => {
-        axios.get('https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/product')
-        .then(res => {
-            if ( res.status === 200 ) {
-                console.log( res.data );
-                setProducts(res.data.data);
-            }
-        })
-        .catch(error => {
-            console.log( error );
-        })
-    }, []);
-
-    const getStatus = (data) => {
-        // console.log(data);
-        var status = data.seccion === 2 ? <Tag value="Por pedido" severity="Warning" /> : "";
-        return status;
-    }
-
-    const getBtnEdit = (data) => {
-        // console.log(data);
-        return <Button icon='pi pi-pencil' size='small' text onClick={() => { getProduct(data.idproduct) }} />
-    }
+    const [modalProducts, setModalProducts] = useState(false);
 
     const handleSubmit = async () => {
         
@@ -82,6 +60,7 @@ export const EditaMenu = () => {
 
     const getProduct = async ( idProduct ) => {
 
+        setModalProducts(false);
         axios.get(`https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/product/${idProduct}`)
         .then(res => {
             
@@ -153,13 +132,59 @@ export const EditaMenu = () => {
         setIsTypeA(false);
     }
 
+    const handleFileChange = (e) => {
+        setImage(e.target.files[0]);
+    }
+
+    const handleSubmitImg = async () => {
+
+        if ( image === null ) {
+            //toast
+        }
+
+        const formData = new FormData();
+        formData.append('image', image);
+
+        console.log( formData );
+
+        await axios.post('http://localhost:5000/api/v1/product/img', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then(res => {
+            console.log( res );
+        })
+        .catch(error => {
+            console.log( error );
+        })
+    }
+
+    const headerCard = () => {
+        return (
+            <div className='flex justify-content-between'>
+                <div>
+                    { update ? 'Actualiza pancito' : 'Nuevo pancito'  }
+                </div>
+                <div style={{ marginTop: '-.5rem' }}>
+                    <Button label='ver pancitos' size='small' onClick={ handleOpenProducts } />
+                </div>
+            </div>
+        )
+
+    }
+
+    const handleOpenProducts = () => {
+        setModalProducts(true);
+    }
+
     return (
         <div>
 
             <Toast ref={toast} />
 
             <div className='flex justify-content-center'>
-                <Card title={ update ? 'Actualiza pancito' : 'Nuevo pancito' } className='sm:col-12 md:col-5'>
+                <Card title={ headerCard } className='sm:col-12 md:col-5'>
 
                     <div>
                         <div className="p-field col-12">
@@ -188,38 +213,26 @@ export const EditaMenu = () => {
                             <label htmlFor="isTypeA"> Por pedido </label>
                         </div>
 
+                        <div className='p-field col-12'>
+                            <input 
+                                type='file'
+                                onChange={handleFileChange}
+                            />
+                        </div>
+
                         <div className="p-field col-12 mt-2 flex justify-content-end">
                             <Button type="submit" size='small' icon="pi pi-save" className='mr-2' onClick={handleSubmit} visible={!update} />
                             <Button type='submit' size='small' icon='pi pi-times' className='mr-2' onClick={handleCancel} severity='secondary' visible={update} />
                             <Button type='submit' size='small' icon='pi pi-save' className='mr-2' onClick={handleUpdate} visible={update} />
+                            {/* <Button type='submit' size='small' icon='pi -pi-image' className='mr-2' onClick={handleSubmitImg} /> */}
                         </div>
                     </div>
                 </Card>
             </div>
-            
-            <div className='flex justify-content-center col-12'>
-                <Card title="Pancito" className='col-12'>
-                    <DataTable value={products} size='small'>
-                        <Column field='name' header='pancito'></Column>
-                        <Column field='description' header='descripción'></Column>
-                        <Column field='price' header='precio'></Column>
-                        <Column 
-                            field='seccion' 
-                            header='por pedido'
-                            style={{ minWidth: '6rem' }}
-                            body={ getStatus }
-                        ></Column>
-                        <Column 
-                            field='idproduct'
-                            body={ getBtnEdit }
-                        ></Column>
-                        {/* <Column 
-                            field='idproduct'
-                            body={ getBtnDel }
-                        ></Column> */}
-                    </DataTable>
-                </Card>
-            </div>
+
+            <Dialog visible={modalProducts} onHide={() => setModalProducts(false)} style={{ width: '50rem' }}>
+                <Table getProduct={getProduct} />
+            </Dialog>
 
         </div>
     )
