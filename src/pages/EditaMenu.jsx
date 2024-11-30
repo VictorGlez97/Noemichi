@@ -31,7 +31,7 @@ export const EditaMenu = () => {
     const [modalProducts, setModalProducts] = useState(false);
 
     const handleSubmit = async () => {
-        
+
         const data = {
             name: name,
             description: description,
@@ -41,12 +41,17 @@ export const EditaMenu = () => {
 
         axios.post('https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/product', data)
         .then(res => {
-            
+
             console.log( res );
 
             if ( res.status === 200 ) {
                 responseSuccess('Producto guardado');
-                return;
+
+                if ( image !== null ) {
+                    handleSubmitImg(res.data.idproduct);
+                }
+
+                // return;
             }
 
             toast.current.show({ severity: 'error', summary: 'Error', detail: res.data.msg, life: 3000 });
@@ -63,7 +68,7 @@ export const EditaMenu = () => {
         setModalProducts(false);
         axios.get(`https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/product/${idProduct}`)
         .then(res => {
-            
+
             console.log( res.status );
             console.log( res.data );
 
@@ -103,7 +108,12 @@ export const EditaMenu = () => {
 
             if ( res.status === 200 ) {
                 responseSuccess('Producto actualizado');
-                return;
+                // return;
+
+                if ( image !== null ) {
+                    handleSubmitImg(res.data.idproduct);
+                }
+
             }
 
         })
@@ -136,28 +146,35 @@ export const EditaMenu = () => {
         setImage(e.target.files[0]);
     }
 
-    const handleSubmitImg = async () => {
+    const handleSubmitImg = async ( idproduct ) => {
 
-        if ( image === null ) {
-            //toast
-        }
+        try {
+    
+            const formData = new FormData();
+            formData.append('image', image);
+            formData.append('idProduct', idproduct);
+    
+            console.log( formData );
+    
+            await axios.post('http://localhost:5000/api/v1/product/img', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(res => {
+                
+                console.log( res );
 
-        const formData = new FormData();
-        formData.append('image', image);
+                responseSuccess(res.data)
 
-        console.log( formData );
+            })
+            .catch(error => {
+                console.log( error );
+            })
 
-        await axios.post('http://localhost:5000/api/v1/product/img', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
-        .then(res => {
-            console.log( res );
-        })
-        .catch(error => {
+        } catch (error) {
             console.log( error );
-        })
+        }
     }
 
     const headerCard = () => {
@@ -214,7 +231,7 @@ export const EditaMenu = () => {
                         </div>
 
                         <div className='p-field col-12'>
-                            <input 
+                            <input
                                 type='file'
                                 onChange={handleFileChange}
                             />
