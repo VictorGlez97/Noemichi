@@ -207,21 +207,39 @@ export const EditaMenu = () => {
                         <div className="p-field col-12">
                             <label htmlFor="name">Pancito</label>
                             <div>
-                                <InputText id="name" value={name} onChange={(e) => setName(e.target.value)} />
+                                <InputText 
+                                    id="name" 
+                                    value={name} 
+                                    onChange={(e) => setName(e.target.value)}
+                                    className='md:w-30rem' 
+                                />
                             </div>
                         </div>
 
                         <div className="p-field col-12">
                             <label htmlFor="price">Precio</label>
                             <div>
-                                <InputNumber id="price" value={price} onValueChange={(e) => setPrice(e.value)} mode="currency" currency="USD" locale="en-US" />
+                                <InputNumber 
+                                    id="price" 
+                                    value={price} 
+                                    onValueChange={(e) => setPrice(e.value)} 
+                                    mode="currency" 
+                                    currency="USD" locale="en-US"
+                                    className='md:w-30rem' 
+                                />
                             </div>
                         </div>
 
                         <div className="p-field col-12">
                             <label htmlFor="description">Descripción</label>
                             <div>
-                                <InputTextarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} rows={5} />
+                                <InputTextarea 
+                                    id="description" 
+                                    value={description} 
+                                    onChange={(e) => setDescription(e.target.value)} 
+                                    rows={5}
+                                    className='md:w-30rem' 
+                                />
                             </div>
                         </div>
 
