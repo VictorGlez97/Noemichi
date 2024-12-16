@@ -11,6 +11,8 @@ import { Checkbox } from 'primereact/checkbox';
 import { Card } from 'primereact/card';
 import { Dialog } from 'primereact/dialog';
 import { Toast } from 'primereact/toast';
+import { FileUpload } from 'primereact/fileupload';
+
 import Table from '../components/editaMenu/Table';
 
 export const EditaMenu = () => {
@@ -254,6 +256,15 @@ export const EditaMenu = () => {
                                 onChange={handleFileChange}
                             />
                         </div>
+
+                        {/* <div className='p-field col-12'>
+                            <FileUpload 
+                                ref={fileUploadRef}
+                                name='demo[]' 
+                                multiple accept='image/*'
+                                onUpload={onUploadImg}
+                            />
+                        </div> */}
 
                         <div className="p-field col-12 mt-2 flex justify-content-end">
                             <Button type="submit" size='small' icon="pi pi-save" className='mr-2' onClick={handleSubmit} visible={!update} />

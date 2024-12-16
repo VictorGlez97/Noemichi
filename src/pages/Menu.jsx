@@ -70,7 +70,14 @@ export const Menu = () => {
         });
 
         setImages(imgs);
-        console.log(images);
+        // console.log(images);
+
+        const div = document.getElementById('gale');
+
+        console.log( div );
+
+        div.classList.toggle('p-component-overlay');
+        div.classList.toggle('p-component-overlay-enter');
 
     }
 
@@ -83,81 +90,81 @@ export const Menu = () => {
     }
 
     return (
-        <div>
-            <div className='col-12 flex justify-content-center'>
-                <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} />
-            </div>
+        <>        
+            <div>
+                <div className='col-12 flex justify-content-center'>
+                    <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} />
+                </div>
 
-            <Tooltip target=".custom-target-icon" />
+                <Tooltip target=".custom-target-icon" />
 
-            <div className='flex justify-content-center'>
-                <Card className='sm:col-12 md:col-8'>
-                    <div className='p-grid'>
-                        {
-                            products.map(product => (
-                                <div 
-                                    className='flex justify-content-between custom-target-icon mb-3' 
-                                    key={ product.idproduct }
-                                    data-pr-tooltip={ product.description }
-                                    data-pr-position='top'
-                                >
-                                    <div className='flex'>
-                                        <div 
-                                            className='mt-4 mr-3'
-                                            onClick={() => HandleOpenImage(product.image)}
-                                        >
-                                            { product.image !== null && <i className='pi pi-image' style={{ cursor: 'pointer', fontSize: '1.2rem', color: '#f0aed1' }}></i>}
-                                        </div>
-                                        <div>
-                                            <div style={{ lineHeight: '0px' }} >
-                                                <h4 style={{ color: '#f0aed1' }}> { product.name } </h4>
-                                                <span style={{ marginTop: '-1rem' }}> ({ product.description }) </span>
+                <div className='flex justify-content-center'>
+                    <Card className='md:col-8'>
+                        <div className='p-grid'>
+                            {
+                                products.map(product => (
+                                    <div 
+                                        className='flex justify-content-between custom-target-icon mb-3' 
+                                        key={ product.idproduct }
+                                        data-pr-tooltip={ product.description }
+                                        data-pr-position='top'
+                                    >
+                                        <div className='flex'>
+                                            <div 
+                                                className='mt-4 mr-3'
+                                                onClick={() => HandleOpenImage(product.image)}
+                                            >
+                                                { product.image !== null && <i className='pi pi-image' style={{ cursor: 'pointer', fontSize: '1.2rem', color: '#f0aed1' }}></i>}
+                                            </div>
+                                            <div>
+                                                <div style={{ lineHeight: '0px' }} >
+                                                    <h4 style={{ color: '#f0aed1' }}> { product.name } </h4>
+                                                    <span style={{ marginTop: '-1rem' }}> ({ product.description }) </span>
+                                                </div>
                                             </div>
                                         </div>
+                                        <div>
+                                            <p> $ { product.price } </p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p> $ { product.price } </p>
-                                    </div>
-                                </div>
-                            ))
-                        }
-                    </div>
-                </Card>
-            </div>
-
-            <div className='flex justify-content-center mt-3'>
-                <Fieldset legend="Pedidos" className='sm:col-12 md:col-8'>
-                <div className='p-grid'>
-                        {
-                            productOrder.map(product => (
-                                <div className='flex justify-content-between' key={ product.idproduct }>
-                                    <div style={{ lineHeight: '1px' }}>
-                                        <h4> { product.name } </h4>
-                                        <span> ({ product.description }) </span>
-                                    </div>
-                                    <div>
-                                        <p> $ { product.price } </p>
-                                    </div>
-                                </div>
-                            ))
-                        }
-                    </div>
-                </Fieldset>
-            </div>
-
-            <Galleria 
-                ref={galleria} value={images} 
-                numVisible={9} style={{ maxWidth: '50%' }} 
-                circular fullScreen showItemNavigators 
-                showThumbnails={false} item={itemTemplate} thumbnail={thumbnailTemplate} 
-            />
-
-            {/*<Dialog visible={modalVisible} onHide={() => setModalVisible(false)} style={{ width: '25rem' }}>
-                <div>
-                    { image !== null && <img src={image} width="100%" alt="Imagen pancito"/> }
+                                ))
+                            }
+                        </div>
+                    </Card>
                 </div>
-            </Dialog>*/}
 
-        </div>
+                <div className='flex justify-content-center mt-3'>
+                    <Fieldset legend="Pedidos" className='sm:col-12 md:col-8'>
+                    <div className='p-grid'>
+                            {
+                                productOrder.map(product => (
+                                    <div className='flex justify-content-between' key={ product.idproduct }>
+                                        <div style={{ lineHeight: '1px' }}>
+                                            <h4> { product.name } </h4>
+                                            <span> ({ product.description }) </span>
+                                        </div>
+                                        <div>
+                                            <p> $ { product.price } </p>
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </Fieldset>
+                </div>
+
+
+                {/*<Dialog visible={modalVisible} onHide={() => setModalVisible(false)} style={{ width: '25rem' }}>
+                    <div>
+                    { image !== null && <img src={image} width="100%" alt="Imagen pancito"/> }
+                    </div>
+                    </Dialog>*/}
+
+            </div>
+            <Galleria 
+                ref={galleria} value={images} numVisible={9} style={{ maxWidth: '50%' }} id='gale'
+                circular fullScreen showItemNavigators showThumbnails={false} item={itemTemplate} thumbnail={thumbnailTemplate} 
+            />
+        </>
     )
 }

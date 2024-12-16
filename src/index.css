@@ -4,6 +4,16 @@ body {
   background-color: #f0aed1;
 }
 
+@media (max-width: 768px) {
+  .p-card {
+    width: 24rem;
+  }
+
+  fieldset {
+    width: 24rem;
+  }
+}
+
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
