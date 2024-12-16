@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
 import { Fieldset } from 'primereact/fieldset'
 import { Tooltip } from 'primereact/tooltip'
 import { Dialog } from 'primereact/dialog'
+import { Galleria } from 'primereact/galleria'
 
 // import NoemichiService from '../services/noemichi';
 import NoemichiBakery from '../assets/img/noemichis.png';
@@ -15,8 +16,11 @@ export const Menu = () => {
     const [products, setProducts] = useState([]);
     const [productOrder, setProductOrder] = useState([]);
 
-    const [modalVisible, setModalVisible] = useState(false);
-    const [image, setImage] = useState(null);
+    // const [modalVisible, setModalVisible] = useState(false);
+    // const [image, setImage] = useState(null);
+
+    const [images, setImages] = useState(null);
+    const galleria = useRef(null);
 
     useEffect(() => {
         // NoemichiService.get('product')
@@ -40,11 +44,42 @@ export const Menu = () => {
             return;
         }
 
+        galleria.current.show();
+
         // const imgBuffer = new Buffer(img, 'binary');
         // const base64Img = imgBuffer.toString('base64');
-        const base64Img = img.toString('base64');
-        setImage(`data:image/jpeg;base64,${base64Img}`);
-        setModalVisible(true);
+        
+        // CON DIALOG
+        // const base64Img = img.toString('base64');
+        // setImage(`data:image/jpeg;base64,${base64Img}`);
+        // setModalVisible(true);
+
+        setImages(null);
+
+        var imgs = [];
+
+        // CON GALLERIA
+        img.map(itm => {
+            var base64Img = itm.toString('base64');
+            imgs.push({
+                itemImageSrc: `data:image/jpeg;base64,${base64Img}`,
+                thumbnailImageSrc: `data:image/jpeg;base64,${base64Img}`,
+                alt: 'Imagen de pancito',
+                title: 'Pancito'
+            })
+        });
+
+        setImages(imgs);
+        console.log(images);
+
+    }
+
+    const itemTemplate = (item) => {
+        return <img src={item.itemImageSrc} alt={item.alt} style={{ width: '100%', display: 'block' }} />;
+    }
+
+    const thumbnailTemplate = (item) => {
+        return <img src={item.thumbnailImageSrc} alt={item.alt} style={{ display: 'block' }} />;
     }
 
     return (
@@ -66,12 +101,19 @@ export const Menu = () => {
                                     data-pr-tooltip={ product.description }
                                     data-pr-position='top'
                                 >
-                                    <div 
-                                        style={{ lineHeight: '0px' }}
-                                        onClick={() => HandleOpenImage(product.image)}
-                                    >
-                                        <h4> { product.name } </h4>
-                                        <span style={{ marginTop: '-1rem' }}> ({ product.description }) { product.image !== null && <i className='pi pi-image' style={{ cursor: 'pointer' }}></i>} </span>
+                                    <div className='flex'>
+                                        <div 
+                                            className='mt-4 mr-3'
+                                            onClick={() => HandleOpenImage(product.image)}
+                                        >
+                                            { product.image !== null && <i className='pi pi-image' style={{ cursor: 'pointer', fontSize: '1.2rem', color: '#f0aed1' }}></i>}
+                                        </div>
+                                        <div>
+                                            <div style={{ lineHeight: '0px' }} >
+                                                <h4 style={{ color: '#f0aed1' }}> { product.name } </h4>
+                                                <span style={{ marginTop: '-1rem' }}> ({ product.description }) </span>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div>
                                         <p> $ { product.price } </p>
@@ -103,11 +145,18 @@ export const Menu = () => {
                 </Fieldset>
             </div>
 
-            <Dialog visible={modalVisible} onHide={() => setModalVisible(false)} style={{ width: '25rem' }}>
+            <Galleria 
+                ref={galleria} value={images} 
+                numVisible={9} style={{ maxWidth: '50%' }} 
+                circular fullScreen showItemNavigators 
+                showThumbnails={false} item={itemTemplate} thumbnail={thumbnailTemplate} 
+            />
+
+            {/*<Dialog visible={modalVisible} onHide={() => setModalVisible(false)} style={{ width: '25rem' }}>
                 <div>
                     { image !== null && <img src={image} width="100%" alt="Imagen pancito"/> }
                 </div>
-            </Dialog>
+            </Dialog>*/}
 
         </div>
     )
