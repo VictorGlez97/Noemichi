@@ -12,6 +12,8 @@ import { Card } from 'primereact/card';
 import { Dialog } from 'primereact/dialog';
 import { Toast } from 'primereact/toast';
 import { FileUpload } from 'primereact/fileupload';
+import { ProgressBar } from 'primereact/progressbar';
+import { Tag } from 'primereact/tag';
 
 import Table from '../components/editaMenu/Table';
 
@@ -26,13 +28,19 @@ export const EditaMenu = () => {
     const [isTypeA, setIsTypeA] = useState(false);
     const [update, setUpdate] = useState(false);
 
-    const [image, setImage] = useState(null);
+    // const [image, setImage] = useState(null);
+    const [images, setImages] = useState(null);
 
-    const [products, setProducts] = useState([]);
+    // const [products, setProducts] = useState([]);
 
     const [modalProducts, setModalProducts] = useState(false);
 
-    const handleSubmit = async () => {
+    // ARCHIVOS
+    // const [totalSize, setTotalSize] = useState(0);
+    // const fileUploadRef = useRef(null);
+    // ARCHIVOS
+
+    const handleSubmit = async (e) => {
 
         const data = {
             name: name,
@@ -49,10 +57,19 @@ export const EditaMenu = () => {
             if ( res.status === 200 ) {
                 responseSuccess('Producto guardado');
 
-                if ( image !== null ) {
-                    handleSubmitImg(res.data.idproduct);
+                console.log( res.data );
+                console.log( res.data.data.idproduct );
+
+                if ( images !== null ) {
+
+                    // handleSubmitImg(res.data.idproduct);
+                    images.map(async (itm) => {
+                        await handleSubmitImg(res.data.data.idproduct, itm.img);
+                    });
+
                 }
 
+                // responseSuccess(res.data.data);
                 // return;
             }
 
@@ -148,27 +165,24 @@ export const EditaMenu = () => {
         setImage(e.target.files[0]);
     }
 
-    const handleSubmitImg = async ( idproduct ) => {
+    const handleSubmitImg = async ( idproduct, image ) => {
 
         try {
     
             const formData = new FormData();
             formData.append('image', image);
-            formData.append('idProduct', idproduct);
+            formData.append('idproduct', idproduct);
     
             console.log( formData );
     
-            await axios.post('http://localhost:5000/api/v1/product/img', formData, {
+            await axios.post('https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/product/img', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             })
             .then(res => {
-                
                 console.log( res );
-
-                responseSuccess(res.data)
-
+                // responseSuccess();
             })
             .catch(error => {
                 console.log( error );
@@ -197,13 +211,55 @@ export const EditaMenu = () => {
         setModalProducts(true);
     }
 
+    const onUpload = (e) => {
+
+        let files = e.files;
+        console.log( files );
+
+    }
+
+    const onSelect = (e) => {
+
+        let files = e.files;
+        console.log( files );
+
+        var arrayImages = [];
+
+        var count = 0;
+        files.map(itm => {
+            // console.log( itm );
+            arrayImages.push({ id: count, img: itm })
+            count++;
+        });
+
+        setImages(arrayImages);
+        
+    }
+
+    const onRemove = (e) => {
+
+        console.log( images );
+
+        e.file
+
+        var arrayImages = images.filter((itm) => itm.img.name !== e.file.name);
+        console.log( arrayImages );
+
+        setImages(arrayImages);
+
+    }
+
+    const sendImages = () => {
+
+    }
+
     return (
         <div>
 
             <Toast ref={toast} />
 
             <div className='flex justify-content-center'>
-                <Card title={ headerCard } className='sm:col-12 md:col-5'>
+                <Card title={ headerCard } className='sm:col-12 md:col-7'>
 
                     <div>
                         <div className="p-field col-12">
@@ -213,7 +269,7 @@ export const EditaMenu = () => {
                                     id="name" 
                                     value={name} 
                                     onChange={(e) => setName(e.target.value)}
-                                    className='md:w-30rem' 
+                                    className='md:col-12' 
                                 />
                             </div>
                         </div>
@@ -227,7 +283,7 @@ export const EditaMenu = () => {
                                     onValueChange={(e) => setPrice(e.value)} 
                                     mode="currency" 
                                     currency="USD" locale="en-US"
-                                    className='md:w-30rem' 
+                                    className='md:col-12' 
                                 />
                             </div>
                         </div>
@@ -240,7 +296,7 @@ export const EditaMenu = () => {
                                     value={description} 
                                     onChange={(e) => setDescription(e.target.value)} 
                                     rows={5}
-                                    className='md:w-30rem' 
+                                    className='md:col-12'
                                 />
                             </div>
                         </div>
@@ -251,10 +307,42 @@ export const EditaMenu = () => {
                         </div>
 
                         <div className='p-field col-12'>
-                            <input
+                            {/*<input
                                 type='file'
                                 onChange={handleFileChange}
+                            />*/}
+
+                            {/* <FileUpload 
+                                ref={fileUploadRef}
+                                name='demo[]' multiple accept='image/*'
+                                customUpload
+                                maxFileSize={100000000} 
+                                onUpload={onTemplateUpload}
+                                onSelect={onTemplateSelect} 
+                                onError={onTemplateClear} 
+                                onClear={onTemplateClear} 
+                                headerTemplate={headerTemplate} 
+                                itemTemplate={itemTemplate} 
+                                emptyTemplate={emptyTemplate}
+                                chooseOptions={chooseOptions} 
+                                uploadOptions={uploadOptions} 
+                                cancelOptions={cancelOptions}
+                                // onUpload={OnHandleUpload}
+                                uploadHandler={OnHandleUpload}
+                            /> */}
+
+                            <FileUpload 
+                                name='demo[]'
+                                customUpload
+                                multiple
+                                accept='image/*'
+                                maxFileSize={10000000}
+                                emptyTemplate={<p className='m-0'> Selecciona o arrastra las imagenes </p>}
+                                onUpload={onUpload}
+                                onSelect={onSelect}
+                                onRemove={onRemove}
                             />
+
                         </div>
 
                         {/* <div className='p-field col-12'>

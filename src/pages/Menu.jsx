@@ -93,7 +93,7 @@ export const Menu = () => {
         <>        
             <div>
                 <div className='col-12 flex justify-content-center'>
-                    <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} />
+                    {/* <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} /> */}
                 </div>
 
                 <Tooltip target=".custom-target-icon" />
@@ -138,10 +138,25 @@ export const Menu = () => {
                     <div className='p-grid'>
                             {
                                 productOrder.map(product => (
-                                    <div className='flex justify-content-between' key={ product.idproduct }>
-                                        <div style={{ lineHeight: '1px' }}>
-                                            <h4> { product.name } </h4>
-                                            <span> ({ product.description }) </span>
+                                    <div 
+                                        className='flex justify-content-between custom-target-icon mb-3' 
+                                        key={ product.idproduct }
+                                        data-pr-tooltip={ product.description }
+                                        data-pr-position='top'
+                                    >
+                                        <div className='flex'>
+                                            <div 
+                                                className='mt-4 mr-3'
+                                                onClick={() => HandleOpenImage(product.image)}
+                                            >
+                                                { product.image !== null && <i className='pi pi-image' style={{ cursor: 'pointer', fontSize: '1.2rem', color: '#f0aed1' }}></i>}
+                                            </div>
+                                            <div>
+                                                <div style={{ lineHeight: '0px' }} >
+                                                    <h4 style={{ color: '#f0aed1' }}> { product.name } </h4>
+                                                    <span style={{ marginTop: '-1rem' }}> ({ product.description }) </span>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div>
                                             <p> $ { product.price } </p>
