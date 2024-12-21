@@ -20,6 +20,7 @@ import Table from '../components/editaMenu/Table';
 export const EditaMenu = () => {
 
     const toast = useRef(null);
+    const fileupd = useRef(null);
 
     const [id, setId] = useState(0);
     const [name, setName] = useState('');
@@ -30,6 +31,7 @@ export const EditaMenu = () => {
 
     // const [image, setImage] = useState(null);
     const [images, setImages] = useState(null);
+    const [imgProduct, setImgProduct] = useState(null);
 
     // const [products, setProducts] = useState([]);
 
@@ -84,6 +86,8 @@ export const EditaMenu = () => {
 
     const getProduct = async ( idProduct ) => {
 
+        console.log( fileupd );
+
         setModalProducts(false);
         axios.get(`https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/product/${idProduct}`)
         .then(res => {
@@ -103,6 +107,19 @@ export const EditaMenu = () => {
                     setIsTypeA(product.seccion === 2 ? true : false);
                     setUpdate(true);
 
+                    setImages(null);
+                    setImgProduct(null);
+                    fileupd.current.setFiles(null);
+
+                    var count = 0;
+                    if (res.data.data[0].image !== undefined && res.data.data[0].image !== null && res.data.data[0].image.length > 0) {
+                        res.data.data[0].image.map(itm => {
+                            var base64Img = itm.toString('base64');
+                            addImageFile(`data:image/jpeg;base64,${base64Img}`, `${count}.jpeg`);
+                            count++;
+                        });
+                    }
+
                 }
             }
 
@@ -110,6 +127,40 @@ export const EditaMenu = () => {
         .catch(error => {
             console.log( error );
         })
+
+    }
+
+    const addImageFile = (base64Img, fileName) => {
+
+        const mimeType = "image/jpeg";
+        const byteString = atob(base64Img.split(",")[1]);
+        const byteArray = new Uint8Array(byteString.length);
+
+        for (let i = 0; i < byteString.length; i++) {
+            byteArray[i] = byteString.charCodeAt(1);
+        }
+
+        const blob = new Blob([byteArray], { type: mimeType });
+
+        console.log( blob );
+
+        const newFile = new File([byteArray], fileName, {type: mimeType})
+        newFile.objectURL = URL.createObjectURL(blob);
+
+        console.log( newFile );
+
+        fileupd.current.setFiles((prevFiles) => [...prevFiles, newFile])
+
+        if ( !Array.isArray(images) ) {
+            setImages([]);
+        }
+
+        if ( !Array.isArray(imgProduct) ) {
+            setImgProduct([]);
+        }
+
+        setImages((prevFiles) => [...prevFiles, { id: fileName.split('.')[0], img: newFile }]);
+        setImgProduct((prevFiles) => [...prevFiles, { id: fileName.split('.')[0], img: newFile }]);
 
     }
 
@@ -147,6 +198,8 @@ export const EditaMenu = () => {
         setUpdate(false);
         setUpdate(!update);
         cleanInpts();
+        setImages(null);
+        fileupd.current.setFiles([]);
     }
 
     const responseSuccess = (msg) => {
@@ -193,6 +246,16 @@ export const EditaMenu = () => {
         }
     }
 
+    // const InvoiceUploadHandler = ({ files }) => {
+    //     try {
+            
+    //         console.log( files );
+
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
+
     const headerCard = () => {
         return (
             <div className='flex justify-content-between'>
@@ -237,10 +300,12 @@ export const EditaMenu = () => {
     }
 
     const onRemove = (e) => {
-
+        
         console.log( images );
 
-        e.file
+        console.log( e.file.name );
+
+        // images.map(itm => { console.log(itm.img.name); })
 
         var arrayImages = images.filter((itm) => itm.img.name !== e.file.name);
         console.log( arrayImages );
@@ -333,6 +398,7 @@ export const EditaMenu = () => {
 
                             <FileUpload 
                                 name='demo[]'
+                                ref={fileupd}
                                 customUpload
                                 multiple
                                 accept='image/*'
@@ -341,6 +407,8 @@ export const EditaMenu = () => {
                                 onUpload={onUpload}
                                 onSelect={onSelect}
                                 onRemove={onRemove}
+                                chooseLabel='imagenes'
+                                // uploadHandler={InvoiceUploadHandler}
                             />
 
                         </div>
@@ -364,7 +432,12 @@ export const EditaMenu = () => {
                 </Card>
             </div>
 
-            <Dialog visible={modalProducts} onHide={() => setModalProducts(false)} style={{ width: '50rem' }}>
+            <Dialog 
+                visible={modalProducts}
+                header="Pancitos" 
+                onHide={() => setModalProducts(false)} 
+                style={{ width: '50rem' }}
+            >
                 <Table getProduct={getProduct} />
             </Dialog>
 

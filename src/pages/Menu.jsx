@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 
+import { useLocation, useNavigate } from 'react-router-dom'
+
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
 import { Fieldset } from 'primereact/fieldset'
@@ -13,11 +15,20 @@ import axios from 'axios';
 
 export const Menu = () => {
   
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { state } = location;
+
+    console.log( state );
+
+    // var toastCupon = state.cupon !== undefined && state.cupon !== null && state.cupon ? 
+
     const [products, setProducts] = useState([]);
     const [productOrder, setProductOrder] = useState([]);
 
     // const [modalVisible, setModalVisible] = useState(false);
     // const [image, setImage] = useState(null);
+    const [modalCupon, setModalCupon] = useState(false);
 
     const [images, setImages] = useState(null);
     const galleria = useRef(null);
@@ -36,6 +47,12 @@ export const Menu = () => {
         .catch(error => {
             console.log( error );
         })
+
+        if (state.cupon !== undefined && state.cupon !== null && state.cupon) {
+            setModalCupon(true);
+            state.cupon = false;
+        }
+
     }, []);
 
     const HandleOpenImage = ( img ) => {
@@ -89,11 +106,15 @@ export const Menu = () => {
         return <img src={item.thumbnailImageSrc} alt={item.alt} style={{ display: 'block' }} />;
     }
 
+    const handleCupon = () => {
+        navigate('/cupon');
+    }
+
     return (
         <>        
             <div>
                 <div className='col-12 flex justify-content-center'>
-                    {/* <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} /> */}
+                    <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} />
                 </div>
 
                 <Tooltip target=".custom-target-icon" />
@@ -180,6 +201,18 @@ export const Menu = () => {
                 ref={galleria} value={images} numVisible={9} style={{ maxWidth: '50%' }} id='gale'
                 circular fullScreen showItemNavigators showThumbnails={false} item={itemTemplate} thumbnail={thumbnailTemplate} 
             />
+
+            <Dialog visible={modalCupon} onHide={() => setModalCupon(false)} style={{ width: '20rem' }}>
+                <div>
+                    <div className='flex justify-content-center'>
+                        <h5> ¿ Quieres ganarte un cupon ? </h5>
+                    </div>
+                    <div className='flex justify-content-center gap-3'>
+                        <Button label='no' onClick={ () => { setModalCupon(false) }} />
+                        <Button label='si' onClick={ handleCupon } />
+                    </div>
+                </div>
+            </Dialog>
         </>
     )
 }

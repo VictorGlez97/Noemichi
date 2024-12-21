@@ -18,6 +18,10 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import { Menu } from "./pages/Menu";
 import { EditaMenu } from "./pages/EditaMenu";
+import EditaCupones from "./pages/EditaCupones";
+import MenuCupon from "./pages/MenuCupon";
+import Config from "./pages/Config";
+import Cupon from "./pages/Cupon";
 
 function App() {
 
@@ -31,10 +35,14 @@ function App() {
       {/* <BrowserRouter> */}
         <Routes>
           <Route path="/menu" element={<Menu />} />
+          <Route path="/cupon" element={<Cupon />} />
           <Route path="/dashboard" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="editamenu" element={<EditaMenu />} />
+          <Route path="/editamenu" element={<EditaMenu />} />
+          <Route path="/editacupon" element={<EditaCupones />} />
+          <Route path="/menu/cupon" element={<MenuCupon />} />
+          <Route path="/config" element={<Config />} />
         </Routes>
       {/* </BrowserRouter> */}
     </>

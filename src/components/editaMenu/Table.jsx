@@ -39,7 +39,7 @@ const Table = ({ getProduct }) => {
     return(
         <>
             <div className='flex justify-content-center col-12'>
-                <Card title="Pancito" className='col-12'>
+                <Card className='col-12'>
                     <DataTable value={products} size='small'>
                         <Column field='name' header='pancito'></Column>
                         <Column field='description' header='descripción'></Column>
