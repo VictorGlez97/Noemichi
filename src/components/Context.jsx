@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext } from "react";
+import api from "../services/noemichi";
 
 const AuthContext = createContext();
 
@@ -6,16 +7,24 @@ export const AuthProvider = ({ children }) => {
 
     const [user, setUser] = useState(null);
 
-    const login = (username, password) => {
+    const login = async (username, password) => {
+        try {
+            const data = { 
+                username, 
+                password 
+            }
+            const response = await api.post('user/login', data)
+            // console.log( response );
 
-        if ( username === 'admin' && password === '1234') {
-            setUser({ username });
-            return true;
-        } else {
-            alert('Credenciales incorrectas');
+            if ( !response.data.error ) {
+                setUser(response.data.user);
+            }
+
+            return !response.data.error;
+        } catch (error) {
+            console.log( error );
             return false;
         }
-
     }
 
     const logout = () => {

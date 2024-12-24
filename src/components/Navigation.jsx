@@ -1,4 +1,5 @@
 import { Menubar } from 'primereact/menubar';
+import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from './Context';
 
@@ -8,9 +9,10 @@ import { Badge } from 'primereact/badge';
 
 const Navigation = () => {
 
+    const navigate = useNavigate();
     const { logout } = useAuth();
 
-    const start = <img alt='logo' src={ NoemichiBakery } height='45'></img>;
+    const start = <img alt='logo' src={ NoemichiBakery } height='45' onClick={() => { navigate('/') }}></img>;
 
     const navlist = [
         // { icon: 'pi pi-fw pi-home', command: () => {
@@ -23,23 +25,21 @@ const Navigation = () => {
             items: [
                 {
                     label: 'Ver menu',
-                    url: '/menu'
+                    // url: '/menu',
+                    command: () => { navigate('/menu') }
                 },
                 {
                     label: 'Edita menu',
-                    url: '/editaMenu'
+                    // url: '/editaMenu',
+                    command: () => { navigate('/editaMenu') }
                 }
             ]
         },
         // { label: 'Pedidos', icon: 'pi pi-fw pi-shopping-cart', command: () => {
         //     window.location.href='/pedido'
         // }},
-        { label: 'Cupones', icon: 'pi pi-fw pi-ticket', command: () => {
-            window.location.href='/editacupon'
-        }},
-        { label: 'Configuración', icon: 'pi pi-fw pi-cog', command: () => {
-            window.location.href='/config'
-        }},
+        { label: 'Cupones', icon: 'pi pi-fw pi-ticket', command: () => { navigate('/editacupon') }},
+        { label: 'Configuración', icon: 'pi pi-fw pi-cog', command: () => { navigate('/config') }},
         // { label: 'Contact', icon: 'pi pi-fw pi-phone', command: () =>{
         //     window.location.href='/contact'
         // }}
