@@ -8,26 +8,27 @@ const Cupon = () => {
 
     useEffect(() => {
 
-        axios.get('https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/cupon/random')
-        .then(res => {
-            if ( res.status === 200 ) {
-                setCupon(res.data.data);
+        async function GetCupon(params) {
+            if ( cupon === null ) {
+                await axios.get('https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/cupon/random')
+                .then(res => {
+                    if ( res.status === 200 ) {
+                        setCupon(res.data.data);
+                    }
+                })
+                .catch(error => {
+                    console.log( error );
+                });
             }
-        })
-        .catch(error => {
-            console.log( error );
-        })
+        }
+        GetCupon();
 
-    });
+    }, [cupon]);
 
     return(
         <>
             <div className="flex justify-content-center">
-
-                {
-                    cupon !== null && <h4> { cupon.text } </h4>
-                }
-
+                { cupon ? <h3> { cupon.text } </h3> : <span><i className="pi pi-spin pi-cog" style={{ fontSize: '2rem' }}></i></span> }
             </div>
         </>
     )

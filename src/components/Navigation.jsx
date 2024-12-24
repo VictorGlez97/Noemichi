@@ -1,8 +1,14 @@
 import { Menubar } from 'primereact/menubar';
 
+import { useAuth } from './Context';
+
 import NoemichiBakery from '../assets/img/noemichis.png';
+import { Button } from 'primereact/button';
+import { Badge } from 'primereact/badge';
 
 const Navigation = () => {
+
+    const { logout } = useAuth();
 
     const start = <img alt='logo' src={ NoemichiBakery } height='45'></img>;
 
@@ -25,9 +31,9 @@ const Navigation = () => {
                 }
             ]
         },
-        { label: 'Pedidos', icon: 'pi pi-fw pi-shopping-cart', command: () => {
-            window.location.href='/pedido'
-        }},
+        // { label: 'Pedidos', icon: 'pi pi-fw pi-shopping-cart', command: () => {
+        //     window.location.href='/pedido'
+        // }},
         { label: 'Cupones', icon: 'pi pi-fw pi-ticket', command: () => {
             window.location.href='/editacupon'
         }},
@@ -39,21 +45,35 @@ const Navigation = () => {
         // }}
     ]
     
-    // const end = 
+    const end = (
+        <div className='flex align-items-center gap-2'>
+            <Button 
+                type='button' 
+                label='Pedidos' 
+                icon='pi pi-shopping-cart' 
+                size='small'
+            >
+                <Badge value='8' severity='danger'></Badge>
+            </Button>
+            <Button 
+                icon='pi pi-power-off' 
+                rounded text 
+                severity='help' 
+                size='small' 
+                aria-label='salir'
+                onClick={logout} 
+            />
+        </div>
+    )
 
     return(
         <div className='flex justify-content-center mt-4'>
-            {/* <header>
-                <nav>
-                    <ul> */}
-                        <Menubar 
-                            className='w-11'
-                            start={start}
-                            model={navlist}
-                        />
-                    {/* </ul>
-                </nav>
-            </header> */}
+            <Menubar 
+                className='w-11'
+                // start={start}
+                model={navlist}
+                end={end}
+            />
         </div>
     )
 

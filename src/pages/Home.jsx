@@ -1,6 +1,15 @@
+import { useAuth } from "../components/Context";
+
 const Home = () => {
+
+    const { user } = useAuth();
+
+    console.log( user );
+
     return(
-        <h1>This is the Home page</h1>
+        <div className="flex justify-content-center">
+            <p> Bienvenido { user.username } </p>
+        </div>
     )
 }
 

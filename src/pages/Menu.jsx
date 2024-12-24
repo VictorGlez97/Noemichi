@@ -48,7 +48,7 @@ export const Menu = () => {
             console.log( error );
         })
 
-        if (state.cupon !== undefined && state.cupon !== null && state.cupon) {
+        if (state !== undefined && state !== null && state.cupon !== undefined && state.cupon !== null && state.cupon) {
             setModalCupon(true);
             state.cupon = false;
         }

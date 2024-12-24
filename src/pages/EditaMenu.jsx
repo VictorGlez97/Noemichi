@@ -372,30 +372,6 @@ export const EditaMenu = () => {
                         </div>
 
                         <div className='p-field col-12'>
-                            {/*<input
-                                type='file'
-                                onChange={handleFileChange}
-                            />*/}
-
-                            {/* <FileUpload 
-                                ref={fileUploadRef}
-                                name='demo[]' multiple accept='image/*'
-                                customUpload
-                                maxFileSize={100000000} 
-                                onUpload={onTemplateUpload}
-                                onSelect={onTemplateSelect} 
-                                onError={onTemplateClear} 
-                                onClear={onTemplateClear} 
-                                headerTemplate={headerTemplate} 
-                                itemTemplate={itemTemplate} 
-                                emptyTemplate={emptyTemplate}
-                                chooseOptions={chooseOptions} 
-                                uploadOptions={uploadOptions} 
-                                cancelOptions={cancelOptions}
-                                // onUpload={OnHandleUpload}
-                                uploadHandler={OnHandleUpload}
-                            /> */}
-
                             <FileUpload 
                                 name='demo[]'
                                 ref={fileupd}
@@ -408,19 +384,8 @@ export const EditaMenu = () => {
                                 onSelect={onSelect}
                                 onRemove={onRemove}
                                 chooseLabel='imagenes'
-                                // uploadHandler={InvoiceUploadHandler}
                             />
-
                         </div>
-
-                        {/* <div className='p-field col-12'>
-                            <FileUpload 
-                                ref={fileUploadRef}
-                                name='demo[]' 
-                                multiple accept='image/*'
-                                onUpload={onUploadImg}
-                            />
-                        </div> */}
 
                         <div className="p-field col-12 mt-2 flex justify-content-end">
                             <Button type="submit" size='small' icon="pi pi-save" className='mr-2' onClick={handleSubmit} visible={!update} />

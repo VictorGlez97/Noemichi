@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 
 // TEMA
 import "primereact/resources/themes/lara-light-indigo/theme.css";
@@ -11,6 +11,7 @@ import 'primeflex/primeflex.css';
 
 // BARRA NAVEGACION
 import Navigation from "./components/Navigation";
+import { AuthProvider, useAuth } from "./components/Context";
 
 // PAGINAS
 import Home from "./pages/Home";
@@ -22,37 +23,63 @@ import EditaCupones from "./pages/EditaCupones";
 import MenuCupon from "./pages/MenuCupon";
 import Config from "./pages/Config";
 import Cupon from "./pages/Cupon";
+import NewOrders from "./pages/NewOrders";
+import Orders from "./pages/Orders";
+import Login from "./pages/Login";
+import Error from "./pages/Error";
 
 function App() {
 
-  let location = useLocation();
+  const { user } = useAuth();
+
+  // let location = useLocation();
 
   return (
     <>
-
-      { location.pathname !== '/menu' && <Navigation /> }
-
-      {/* <BrowserRouter> */}
-        <Routes>
-          <Route path="/menu" element={<Menu />} />
-          <Route path="/cupon" element={<Cupon />} />
-          <Route path="/dashboard" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/editamenu" element={<EditaMenu />} />
-          <Route path="/editacupon" element={<EditaCupones />} />
-          <Route path="/menu/cupon" element={<MenuCupon />} />
-          <Route path="/config" element={<Config />} />
-        </Routes>
-      {/* </BrowserRouter> */}
+      { user !== null ? <AuthenticatedRoutes /> : <GuestRoutes /> }
     </>
   )
+}
+
+const AuthenticatedRoutes = () => {
+  return (
+    <>
+      <Navigation />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/editamenu" element={<EditaMenu />} />
+        <Route path="/editacupon" element={<EditaCupones />} />
+        <Route path="/config" element={<Config />} />
+        <Route path="/pedidos" element={<Orders />} />
+        <Route path="*" element={<Navigate to='/' replace />} />
+      </Routes>
+    </>
+  );
+}
+
+const GuestRoutes = () => {
+  return (
+    <>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/menu" element={<Menu />} />
+        <Route path="/menu/cupon" element={<MenuCupon />} />
+        <Route path="/cupon" element={<Cupon />} />
+        <Route path="/pedido" element={<NewOrders />} />
+        <Route path="*" element={<Error />} />
+      </Routes>
+    </>
+  );
 }
 
 const MainApp = () => (
   <div>
     <BrowserRouter>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </BrowserRouter>
   </div>
 )

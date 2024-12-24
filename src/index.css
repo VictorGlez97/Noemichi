@@ -16,6 +16,10 @@ button[aria-label="Cancel"] {
   display: none;
 }
 
+#password input {
+  width: 42vh;
+}
+
 @media (max-width: 768px) {
   .p-card {
     width: 24rem;
@@ -23,6 +27,10 @@ button[aria-label="Cancel"] {
 
   fieldset {
     width: 24rem;
+  }
+
+  #password input {
+    width: 35vh;
   }
 }
 
