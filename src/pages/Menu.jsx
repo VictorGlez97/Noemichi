@@ -205,6 +205,13 @@ export const Menu = () => {
             <Dialog visible={modalCupon} onHide={() => setModalCupon(false)} style={{ width: '20rem' }}>
                 <div>
                     <div className='flex justify-content-center'>
+                        <img 
+                            src={NoemichiBakery} 
+                            alt='Noemichis bakery' 
+                            style={{ width: '6rem', height: '6rem' }} 
+                        />
+                    </div>
+                    <div className='flex justify-content-center'>
                         <h5> ¿ Quieres ganarte un cupon ? </h5>
                     </div>
                     <div className='flex justify-content-center gap-3'>
