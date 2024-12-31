@@ -2,12 +2,23 @@
 import { InputText } from 'primereact/inputtext'
 import { Fieldset } from 'primereact/fieldset'
 import { Button } from 'primereact/button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import api from '../services/noemichi';
 
 const Config = () => {
     
-    const [instagram, setInstagram] = useState('');
+    const [socialMedia, setSocialMedia] = useState([]);
 
+    useEffect(() => {
+        getConfigSocialMedia();
+    }, [])
+
+    const getConfigSocialMedia = async () => {
+        const response = await api.get(`config?type=SOCIALMEDIA`);
+        if (response.response.data.data !== undefined && response.response.data.data.length > 0) {
+            setSocialMedia(response.data.data);
+        }
+    }
 
     const GuardaConfig = () => {
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import axios from 'axios';
 
-import Cuponcito from '../assets/img/Cuponcito.png';
+import Cuponcito from '../assets/img/Cuponcito-removebg-preview.png';
 
 const Cupon = () => {
 
@@ -55,7 +55,7 @@ const Cupon = () => {
                             <h3 
                                 className="font-bold text-2xl" 
                                 style={{ 
-                                    // marginTop: '2rem',
+                                    marginTop: '2.5rem',
                                     position: 'absolute',
                                     top: '50%',
                                     left: '50%',
