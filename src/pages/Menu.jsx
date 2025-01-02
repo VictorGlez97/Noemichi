@@ -12,6 +12,7 @@ import { Galleria } from 'primereact/galleria'
 // import NoemichiService from '../services/noemichi';
 import NoemichiBakery from '../assets/img/noemichis.png';
 import axios from 'axios';
+import api from '../services/noemichi'
 
 export const Menu = () => {
   
@@ -23,6 +24,7 @@ export const Menu = () => {
 
     // var toastCupon = state.cupon !== undefined && state.cupon !== null && state.cupon ? 
 
+    const [socialMedia, setSocialMedia] = useState([]);
     const [products, setProducts] = useState([]);
     const [productOrder, setProductOrder] = useState([]);
 
@@ -34,8 +36,7 @@ export const Menu = () => {
     const galleria = useRef(null);
 
     useEffect(() => {
-        // NoemichiService.get('product')
-        // axios.get('http://localhost:5000/api/v1/product')
+
         axios.get('https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/product')
         .then(res => {
             if ( res.status === 200 ) {
@@ -48,12 +49,24 @@ export const Menu = () => {
             console.log( error );
         })
 
+        getSocialMedia();
+
         if (state !== undefined && state !== null && state.cupon !== undefined && state.cupon !== null && state.cupon) {
             setModalCupon(true);
             state.cupon = false;
         }
 
     }, []);
+
+    const getSocialMedia = async () => {
+
+        const response = await api.get('config?type=SOCIALMEDIA');
+        if ( response.data.data !== undefined ) {
+            console.log( response.data.data );
+            setSocialMedia(response.data.data);            
+        }
+
+    }
 
     const HandleOpenImage = ( img ) => {
 
@@ -62,15 +75,6 @@ export const Menu = () => {
         }
 
         galleria.current.show();
-
-        // const imgBuffer = new Buffer(img, 'binary');
-        // const base64Img = imgBuffer.toString('base64');
-        
-        // CON DIALOG
-        // const base64Img = img.toString('base64');
-        // setImage(`data:image/jpeg;base64,${base64Img}`);
-        // setModalVisible(true);
-
         setImages(null);
 
         var imgs = [];
@@ -115,6 +119,24 @@ export const Menu = () => {
             <div>
                 <div className='col-12 flex justify-content-center'>
                     <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} />
+                </div>
+
+                <div 
+                    className='col-12 flex justify-content-center'
+                    style={{ marginTop: '-1rem' }}
+                >
+                    {
+                        socialMedia.map(social => [
+                            <div 
+                                className='flex justify-content-center gap-2' 
+                                key={ social.idconfig }
+                                style={{ color: '#bb97ff' }}
+                            >
+                                <i className={ social.value2 } style={{ fontSize: '1.5rem' }}></i>
+                                <div className='text-xl'>{ social.value }</div>
+                            </div>
+                        ])
+                    }
                 </div>
 
                 <Tooltip target=".custom-target-icon" />

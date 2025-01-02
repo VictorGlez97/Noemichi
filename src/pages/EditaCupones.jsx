@@ -11,11 +11,15 @@ import { Card } from 'primereact/card';
 import { Calendar } from 'primereact/calendar';
 import { Dialog } from 'primereact/dialog';
 import { Toast } from 'primereact/toast';
+import Table from '../components/Cupon/Table';
+import api from '../services/noemichi';
+import moment from 'moment';
 
 const EditaCupones = () => {
     
     const toast = useRef(null);
-    
+
+    const [idCupon, setIdCupon] = useState(null);
     const [cupon, setCupon] = useState('');
     const [start, setStart] = useState('');
     const [close, setClose] = useState('');
@@ -72,20 +76,63 @@ const EditaCupones = () => {
     }
 
     const handleCancel = () => {
+        setUpdate(false);
+        cleanInpts();
+    }
+
+    const handleUpdate = async () => {
+
+        const data = {
+            text: cupon,
+            start,
+            close,
+            active,
+            uses: number
+        }
+
+        const response = await api.put(`cupon/${idCupon}`);
+
+        console.log(response);
+        
+        if ( response.data.error === undefined || response.data.error === null ) {
+            responseError('No fue posible actualizar el cupon'); 
+            return;                       
+        }
+
+        if ( response.data.error ) {
+            responseError( response.data.msg );
+            return;
+        }
+
+        responseSuccess( response.data.msg );
 
     }
 
-    const handleUpdate = () => {
+    const getCupon = async ( idcupon ) => {
 
-    }
+        setModalCupons(false);
+        setUpdate(true);
+        const response = await api.get(`cupon/${idcupon}`);        
 
-    const getCupon = () => {
+        if ( response.data.data === undefined || response.data.data === null ) {
+            return;
+        }
+
+        const cupons = response.data.data[0];
+        console.log( cupons );
+
+        setIdCupon( cupons.idcupon );
+        setCupon( cupons.text );
+        setStart( moment(cupons.start).format('MM/DD/YY') );
+        setClose( moment(cupons.close).format('MM/DD/YY') );
+        setNumber( cupons.uses );
+        setActive( cupons.activo );
 
     }
 
     const handleOpenCupons = () => {
-
-    }
+        setModalCupons(true);
+    }   
 
     const responseSuccess = (msg) => {
         toast.current.show({ severity: 'success', summary: 'Éxito', detail: msg, life: 3000 })
@@ -135,6 +182,7 @@ const EditaCupones = () => {
                                         value={start} 
                                         onChange={(e) => setStart(e.value)} 
                                         className='md:col-12'
+                                        dateFormat='dd/mm/yy'
                                     />
                                 </div>
                             </div>
@@ -147,6 +195,7 @@ const EditaCupones = () => {
                                         value={close} 
                                         onChange={(e) => setClose(e.value)} 
                                         className='md:col-12'
+                                        dateFormat='dd/mm/yy'
                                     />
                                 </div>
                             </div>
@@ -174,7 +223,6 @@ const EditaCupones = () => {
                             <Button type="submit" size='small' icon="pi pi-save" className='mr-2' onClick={handleSubmit} visible={!update} />
                             <Button type='submit' size='small' icon='pi pi-times' className='mr-2' onClick={handleCancel} severity='secondary' visible={update} />
                             <Button type='submit' size='small' icon='pi pi-save' className='mr-2' onClick={handleUpdate} visible={update} />
-                            {/* <Button type='submit' size='small' icon='pi -pi-image' className='mr-2' onClick={handleSubmitImg} /> */}
                         </div>
                     </div>
                 </Card>
@@ -182,12 +230,11 @@ const EditaCupones = () => {
 
             <Dialog 
                 visible={modalCupons}
-                header="Pancitos" 
+                header="Cupones" 
                 onHide={() => setModalCupons(false)} 
-                style={{ width: '50rem' }}
+                style={{ width: '70rem' }}
             >
-                {/* <Cupons getCupon={getCupon} /> */}
-                <div></div>
+                <Table getCupon={getCupon} />
             </Dialog>
 
         </div>

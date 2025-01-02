@@ -267,7 +267,6 @@ export const EditaMenu = () => {
                 </div>
             </div>
         )
-
     }
 
     const handleOpenProducts = () => {
