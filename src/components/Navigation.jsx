@@ -70,7 +70,7 @@ const Navigation = () => {
         <div className='flex justify-content-center mt-4'>
             <Menubar 
                 className='w-11'
-                start={start}
+                // start={start}
                 model={navlist}
                 end={end}
             />

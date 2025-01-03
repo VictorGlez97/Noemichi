@@ -8,7 +8,7 @@ const Home = () => {
 
     return(
         <div className="flex justify-content-center">
-            <p> Bienvenido { user.username } </p>
+            {/* <p> Bienvenido { user.username } </p> */}
         </div>
     )
 }

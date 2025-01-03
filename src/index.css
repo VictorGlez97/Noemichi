@@ -1,7 +1,7 @@
 body {
   /* background-color: #ffc197; */
-  /* background-color: azure; */
-  background-color: #f0aed1;
+  background-color: azure;
+  /* background-color: #f0aed1; */
 }
 
 /* .p-fileupload-buttonbar {
@@ -18,6 +18,10 @@ button[aria-label="Cancel"] {
 
 #password input {
   width: 42vh;
+}
+
+.orderProducts .p-orderlist-controls {
+  display: none;
 }
 
 @media (max-width: 768px) {

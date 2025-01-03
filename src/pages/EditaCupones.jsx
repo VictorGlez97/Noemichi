@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import axios from 'axios';
 
@@ -21,14 +21,24 @@ const EditaCupones = () => {
 
     const [idCupon, setIdCupon] = useState(null);
     const [cupon, setCupon] = useState('');
-    const [start, setStart] = useState('');
-    const [close, setClose] = useState('');
+    const [start, setStart] = useState(new Date());
+    const [close, setClose] = useState(null);
     const [number, setNumber] = useState(0);
     const [active, setActive] = useState(true);
 
     const [update, setUpdate] = useState(false);
 
     const [modalCupons, setModalCupons] = useState(false);
+
+    useEffect(() => {
+        getTommorrowDate();
+    }, [])
+
+    const getTommorrowDate = () => {
+        const today = new Date();
+        today.setDate(today.getDate()+1);
+        setClose(today);
+    }
 
     const headerCard = () => {
         return (
@@ -90,11 +100,11 @@ const EditaCupones = () => {
             uses: number
         }
 
-        const response = await api.put(`cupon/${idCupon}`);
+        const response = await api.put(`cupon/${idCupon}`, data);
 
         console.log(response);
         
-        if ( response.data.error === undefined || response.data.error === null ) {
+        if ( response.data.data === undefined || response.data.data === null ) {
             responseError('No fue posible actualizar el cupon'); 
             return;                       
         }
@@ -104,7 +114,8 @@ const EditaCupones = () => {
             return;
         }
 
-        responseSuccess( response.data.msg );
+        responseSuccess( 'Cupón actualizado' );
+        cleanInpts();
 
     }
 
@@ -123,10 +134,10 @@ const EditaCupones = () => {
 
         setIdCupon( cupons.idcupon );
         setCupon( cupons.text );
-        setStart( moment(cupons.start).format('MM/DD/YY') );
-        setClose( moment(cupons.close).format('MM/DD/YY') );
+        setStart( new Date(cupons.start) );
+        setClose( new Date(cupons.close) );
         setNumber( cupons.uses );
-        setActive( cupons.activo );
+        setActive( cupons.active );
 
     }
 
@@ -144,11 +155,13 @@ const EditaCupones = () => {
     }
 
     const cleanInpts = () => {
+        setIdCupon(null);
         setCupon('');
-        setStart('');
-        setClose('');
+        setStart(new Date());
+        getTommorrowDate();
         setNumber(0);
         setActive(true);
+        setUpdate(false);
     }
 
     return(
@@ -210,6 +223,9 @@ const EditaCupones = () => {
                                     value={number} 
                                     onValueChange={(e) => setNumber(e.value)} 
                                     className='md:col-12' 
+                                    mode='decimal'
+                                    showButtons
+                                    min={0}
                                 />
                             </div>
                         </div>
