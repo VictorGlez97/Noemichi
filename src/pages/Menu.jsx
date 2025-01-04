@@ -118,7 +118,7 @@ export const Menu = () => {
         <>        
             <div>
                 <div className='col-12 flex justify-content-center'>
-                    {/* <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} /> */}
+                    <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} />
                 </div>
 
                 <div 
@@ -227,11 +227,11 @@ export const Menu = () => {
             <Dialog visible={modalCupon} onHide={() => setModalCupon(false)} style={{ width: '20rem' }}>
                 <div>
                     <div className='flex justify-content-center'>
-                        {/* <img 
+                        <img 
                             src={NoemichiBakery} 
                             alt='Noemichis bakery' 
                             style={{ width: '6rem', height: '6rem' }} 
-                        /> */}
+                        />
                     </div>
                     <div className='flex justify-content-center'>
                         <h5> ¿ Quieres ganarte un cupon ? </h5>
