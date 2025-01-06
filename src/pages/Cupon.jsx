@@ -1,31 +1,60 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import axios from 'axios';
 
 import Cuponcito from '../assets/img/Cuponcito-removebg-preview.png';
+import api from "../services/noemichi";
 
 const Cupon = () => {
 
+    const navigate = useNavigate();
+
     const [cupon, setCupon] = useState(null);
+    // const [ip, setIp] = useState('');
 
     useEffect(() => {
+        
+        // if ( cupon !== null ) {
+        //     GetCupon();
+        // }
 
-        async function GetCupon(params) {
-            if ( cupon === null ) {
-                await axios.get('https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/cupon/random')
-                .then(res => {
-                    if ( res.status === 200 ) {
-                        setCupon(res.data.data);
-                    }
-                })
-                .catch(error => {
-                    console.log( error );
-                });
-            }
-        }
-        GetCupon();
+        const timmer = setTimeout(async () => {
+            console.log( 'Ejecutando timmer' );
+            await SetUserCupon();
+        }, 1000);
+
+        return () => clearTimeout(timmer);
 
     }, [cupon]);
+
+    const GetCupon = async ( ip ) => {
+        if ( cupon === null ) {
+
+            const res = await api.post('cupon/random', { ipDevice: ip })
+            console.log( res );
+
+            if ( res.status === 200 ) {
+                setCupon(res.data.data);
+                return;
+            }
+            // navigate('/menu');
+        }
+    }
+
+    const SetUserCupon = async () => {
+        if ( cupon === null ) {
+            
+            axios.get('https://api.ipify.org?format=json')
+            .then(async (res) => {
+                await GetCupon( res.data.ip );
+            })
+            .catch(error => {
+                navigate('/menu');
+            });
+
+        }
+    }
 
     return(
         <>
