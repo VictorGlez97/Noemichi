@@ -73,6 +73,7 @@ const NewOrders = () => {
             discount: 0.0,
             cupon: null,
             status: 'envoy',
+            phone: phone,
             products: dataProducts
         };
 
@@ -81,8 +82,25 @@ const NewOrders = () => {
         
         if ( !response.data.data || response.data.data.length <= 0 ) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'No fue posible crear el pedido', life: 3000 });
+            return;
         }
 
+        toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Se ha creado el pedido', life: 3000 });
+        cleanInpts();
+
+    }
+
+    const cleanInpts = () => {
+        setDescription('');
+        setName('');
+        setPhone('');
+        setDeliver(new Date());
+        setSelectProduct(null);
+        setAmountProduct(0);
+        setOrderProducts([]);
+        setProducts([]);
+        setActiveNote(true);
+        setValidateOrder(false);
     }
 
     const templateOrder = ( item, index ) => {
@@ -393,50 +411,58 @@ const NewOrders = () => {
             </div>
             
             <Dialog header='Confirmación de pedido' visible={validateOrder} style={{ width: '40vw' }}>
-                <div>
+                <div className="flex justify-content-around mb-4">
+                    <div>
+
+                        <div className="mt-1 mb-2">
+                            <label htmlFor="" className="text-lg"> Nombre pedido: </label><br />
+                            <span className="text-lg font-bold">{ name }</span>
+                        </div>
+
+                        <div className="mt-1 mb-2">
+                            <label htmlFor="" className="text-lg"> Telefono: </label><br />
+                            <span className="text-lg font-bold">{ phone }</span>
+                        </div>
+
+                        <div className="mt-1 mb-2">
+                            <label htmlFor="" className="text-lg"> Día de entrega: </label><br />
+                            <span className="text-lg font-bold">{ moment(deliver).format('DD/MM/YYYY') }</span>
+                        </div>
+                    </div>
                     
                     <div>
-                        <label htmlFor=""> Nombre pedido: </label><br />
-                        { name }
-                    </div>
 
-                    <div>
-                        <label htmlFor=""> Telefono: </label><br />
-                        { phone }
-                    </div>
+                        <div className="mt-1 mb-2">
+                            <label htmlFor="" className="text-lg"> Productos: </label>
+                            {
+                                orderProducts.length > 0
+                                &&
+                                orderProducts.map(product => (
+                                    <div className="text-lg font-bold">
+                                        -
+                                        {
+                                            product.number > 1
+                                            ?
+                                            <span> {product.number} piezas </span>
+                                            :
+                                            <span> {product.number} pieza </span>
+                                        }
+                                        { product.product }
+                                    </div>
+                                ))
+                            }
+                        </div>
 
-                    <div>
-                        <label htmlFor=""> Día de entrega: </label><br />
-                        { moment(deliver).format('DD/MM/YYYY') }
-                    </div>
-
-                    <div>
-                        <label htmlFor=""> Productos: </label>
-                        {
-                            orderProducts.map(product => (
-                                <div>
-                                    { product.product }
-                                    {
-                                        product.number > 1
-                                        ?
-                                        <span>{product.number} piezas</span>
-                                        :
-                                        <span>{product.number} pieza</span>
-                                    }
-                                </div>
-                            ))
-                        }
-                    </div>
-
-                    <div>
-                        <label htmlFor=""> Nota: </label><br />
-                        { description }
+                        <div className="mt-1 mb-2">
+                            <label htmlFor="" className="text-lg"> Nota: </label><br />
+                            <span className="text-lg font-bold">{ description }</span>
+                        </div>
                     </div>
 
                 </div>
                 <div className="flex justify-content-between">
-                    <Button value='Cancelar' onClick={() => { setValidateOrder(false) }} />
-                    <Button value='Confirmar' onClick={ handleSubmit } />
+                    <Button label='Cancelar' onClick={() => { setValidateOrder(false) }} />
+                    <Button label='Confirmar' onClick={ handleSubmit } />
                 </div>
             </Dialog>
 

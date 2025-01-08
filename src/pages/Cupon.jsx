@@ -92,14 +92,15 @@ const Cupon = () => {
                                     transform: 'rotate(-3.5deg) translate(-45%,-150%)', 
                                     transformOrigin: 'center',
                                     maxWidth: '20rem',
-                                    color: '#E71B6E',
+                                    // color: '#E71B6E',
+                                    color: '#E66995'
                                 }}
                             > 
                             {/* prueba prueba prueba prueba prueba prueba prueba prueba prueba prueba prueba prueba */}
                             { cupon.text } 
                             </h3> 
                             :
-                            <span><i className="pi pi-spin pi-cog" style={{ fontSize: '2rem' }}></i></span> 
+                            <span><i className="pi pi-spin pi-spinner-dotted" style={{ fontSize: '2rem' }}></i></span> 
                         }
                     </div>
                 </div>

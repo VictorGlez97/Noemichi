@@ -7,51 +7,87 @@ import api from '../services/noemichi';
 
 const Config = () => {
     
-    const [socialMedia, setSocialMedia] = useState([]);
+    // const [socialMedia, setSocialMedia] = useState([]);
+    const [configurations, setConfigurations] = useState([]);
 
     useEffect(() => {
-        getConfigSocialMedia();
+        getConfigs();
     }, [])
 
-    const getConfigSocialMedia = async () => {
-        const response = await api.get(`config?type=SOCIALMEDIA`);
-        if (response.response.data.data !== undefined && response.response.data.data.length > 0) {
-            setSocialMedia(response.data.data);
+    const getConfigs = async () => {
+
+        const response = await api.get('config/menu');
+
+        console.log( response );
+
+        if ( response.data.data && !response.data.error ) {
+            setConfigurations(response.data.data);
+        }
+
+    }
+
+    const handleInputChange = (configIndex, itemIndex, newValue) => {
+        const updatedConfigurations = [...configurations]; 
+        updatedConfigurations[configIndex].configs[itemIndex].value = newValue; 
+        setConfigurations(updatedConfigurations);
+    };
+
+    const GuardaConfig = async ( configIndex, itemIndex, item ) => {
+        item.value = configurations[configIndex].configs[itemIndex].value;
+        const response = await api.put(`config/${item.idconfig}`, item);
+        console.log( response );
+
+        if ( response.data.data ) {
+            getConfigs();
         }
     }
 
-    const GuardaConfig = () => {
-
-    }
-
     return(
-        <>
-            <div className='flex justify-content-center'>
+        <div className='flex justify-content-center'>
+            <div className='flex-block justify-content-center col-6 gap-5'>
 
-                <Fieldset 
-                    legend='Social media' 
-                    toggleable
-                    className='w-4'
-                >
-
-                    <div className='flex justify-content-around'>
-                        <div className='vertical-align-middle'>
-                            <span><i className='pi pi-instagram' style={{ fontSize: '2rem' }}></i></span>
-                        </div>
-
-                        <div>
-                            <InputText value={instagram} className="p-inputtext-sm" onChange={(e) => setInstagram(e.target.value)} />
-                        </div>
-
-                        <div>
-                            <Button label='Guardar' size='small' onClick={() => GuardaConfig('instagram', instagram)} />
-                        </div>
-                    </div>
-
-                </Fieldset>
+                {
+                    configurations.map((config, indexC) => (
+                        <Fieldset
+                            legend={config.type}
+                            key={config.type}
+                            toggleable
+                            className='w-full mt-2 mb-2'
+                        >
+                            {
+                                config.configs.map((itm, indexI) => (
+                                    <div className='flex justify-content-around mb-2 mt-1' key={itm.idconfig}>
+                                        <div className='vertical-align-middle'>
+                                            <span>
+                                                <i 
+                                                    className={itm.value2}
+                                                    style={{ fontSize: '2rem', marginTop: '.3rem' }}
+                                                ></i>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <InputText 
+                                                className="p-inputtext-sm" 
+                                                value={config.configs[indexI].value} 
+                                                onChange={(e) => { handleInputChange( indexC, indexI, e.target.value ) }} 
+                                            />
+                                        </div>
+                                        <div>
+                                            <Button 
+                                                icon='pi pi-save' 
+                                                size='small' 
+                                                onClick={(e) => GuardaConfig( indexC, indexI, itm )} 
+                                            />
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                        </Fieldset>
+                    ))
+                }
 
             </div>
-        </>
+        </div>
     )
 }
 

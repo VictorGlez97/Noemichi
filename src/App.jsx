@@ -53,6 +53,7 @@ const AuthenticatedRoutes = () => {
         <Route path="/editacupon" element={<EditaCupones />} />
         <Route path="/config" element={<Config />} />
         <Route path="/pedidos" element={<Orders />} />
+        <Route path="/creapedido" element={<NewOrders />} /> 
         <Route path="*" element={<Navigate to='/' replace />} />
       </Routes>
     </>

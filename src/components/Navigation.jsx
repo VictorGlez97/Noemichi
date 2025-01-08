@@ -52,6 +52,7 @@ const Navigation = () => {
                 label='Pedidos' 
                 icon='pi pi-shopping-cart' 
                 size='small'
+                onClick={() => { navigate('/pedidos') }}
             >
                 <Badge value='8' severity='danger'></Badge>
             </Button>
