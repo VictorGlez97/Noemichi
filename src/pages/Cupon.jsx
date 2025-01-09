@@ -126,14 +126,14 @@ const Cupon = () => {
                         }}
                     >
                         <div className="flex justify-content-center z-0">
-                            {/* <img 
+                            <img 
                                 src={Cuponcito} 
                                 alt='Noemichis bakery' 
                                 style={{ 
                                     width: '30rem', 
                                     height: '20rem' 
                                 }} 
-                            /> */}
+                            />
                         </div>
                         <div className="z-1">
                             <h3 
