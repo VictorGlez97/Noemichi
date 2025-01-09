@@ -21,6 +21,7 @@ const Cupon = () => {
     const toast = useRef(null);
 
     const [cupon, setCupon] = useState(null);
+    const [condition, setCondition] = useState(null);
     // const [ip, setIp] = useState('');
     const [cupons, setCupons] = useState([]);
 
@@ -30,6 +31,8 @@ const Cupon = () => {
         //     GetCupon();
         // }
 
+        getConditionCupons();
+
         const timmer = setTimeout(async () => {
             console.log( 'Ejecutando timmer' );
             await SetUserCupon();
@@ -38,6 +41,15 @@ const Cupon = () => {
         return () => clearTimeout(timmer);
 
     }, [cupon]);
+
+    const getConditionCupons = async () => {
+
+        const response = await api.get('config?type=CUPONS&title=condicion');
+        if ( response.data.data && response.data.data.length > 0 ) {
+            setCondition(response.data.data[0]);
+        }
+
+    }
 
     const GetCupon = async ( ip ) => {
         if ( cupon === null ) {
@@ -144,6 +156,13 @@ const Cupon = () => {
                             </h3> 
                         </div>
                     </div>
+                    {
+                        condition !== null
+                        &&
+                        <div className="flex justify-content-center">
+                            <span>* { condition.value }</span>
+                        </div>
+                    }
                 </div> 
             }
 
