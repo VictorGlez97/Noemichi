@@ -118,10 +118,10 @@ export const Menu = () => {
         <>        
             <div>
                 <div className='col-12 flex justify-content-center'>
-                    <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} />
+                    {/* <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} /> */}
                 </div>
 
-                <div 
+                {/* <div 
                     className='col-12 flex justify-content-center'
                     style={{ marginTop: '-1rem' }}
                 >
@@ -137,9 +137,19 @@ export const Menu = () => {
                             </div>
                         ])
                     }
-                </div>
+                </div> */}
 
                 <Tooltip target=".custom-target-icon" />
+                
+                <div className='flex justify-content-center'>
+                    <Button 
+                        label='Hacer pedido' 
+                        icon='pi pi-shopping-cart' 
+                        size='small'
+                        className='mt-2 mb-2'
+                        onClick={() => { navigate('/pedido') }} 
+                    />
+                </div> 
 
                 <div className='flex justify-content-center'>
                     <Card className='md:col-8'>
@@ -227,11 +237,11 @@ export const Menu = () => {
             <Dialog visible={modalCupon} onHide={() => setModalCupon(false)} style={{ width: '20rem' }}>
                 <div>
                     <div className='flex justify-content-center'>
-                        <img 
+                        {/* <img 
                             src={NoemichiBakery} 
                             alt='Noemichis bakery' 
                             style={{ width: '6rem', height: '6rem' }} 
-                        />
+                        /> */}
                     </div>
                     <div className='flex justify-content-center'>
                         <h5> ¿ Quieres ganarte un cupon ? </h5>

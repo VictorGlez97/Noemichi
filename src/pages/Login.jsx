@@ -38,7 +38,7 @@ const Login = () => {
                     className="md:col-3 sm:col-4 mt-5"
                 >
                     <div className='col-12 flex justify-content-center'>
-                        <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '8rem', height: '8rem', marginTop: '-2rem' }} />
+                        {/* <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '8rem', height: '8rem', marginTop: '-2rem' }} /> */}
                     </div>
                     <div className="">
 

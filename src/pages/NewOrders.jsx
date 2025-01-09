@@ -16,6 +16,7 @@ import { Tag } from "primereact/tag";
 
 import api from "../services/noemichi";
 import { Dialog } from "primereact/dialog";
+import axios from "axios";
 
 const NewOrders = () => {
     
@@ -30,13 +31,17 @@ const NewOrders = () => {
     const [amountProduct, setAmountProduct] = useState(0);
     const [orderProducts, setOrderProducts] = useState([]);
     const [products, setProducts] = useState([]);
+    const [cupons, setCupons] = useState([]);
 
     const [activeNote, setActiveNote] = useState(true);
     const [activeProducts, setActiveProducts] = useState(false);
     const [validateOrder, setValidateOrder] = useState(false);
 
+    const [selectCupon, setSelectCupon] = useState(null);
+
     useEffect(() => {
         getProducts();
+        getCupons();
     }, []);
 
     // useEffect(() => {
@@ -47,6 +52,22 @@ const NewOrders = () => {
         const dataProducts = await api.get('product');
         console.log( dataProducts );
         setProducts(dataProducts.data.data);
+    }
+
+    const getCupons = async () => {
+
+        await axios.get('https://api.ipify.org?format=json')
+        .then(async (res) => {
+            const response = await api.post('cupon/device', { ipDevice: res.data.ip });
+            if ( response.data.data && response.data.data.length > 0 ) {
+                setCupons(response.data.data);
+            } 
+        })
+        .catch(error => {
+            // navigate('/menu');
+            toast.current.show({ severity: 'error', summary: 'Error', detail: error, life: 3000 });
+        });
+
     }
 
     const handleSubmit = async () => {
@@ -71,7 +92,7 @@ const NewOrders = () => {
             total: total,
             date: moment(deliver).format('YYYY-MM-DD HH:mm:ss'),
             discount: 0.0,
-            cupon: null,
+            cupon: selectCupon !== null && selectCupon !== undefined ? selectCupon.idcupon : null,
             status: 'envoy',
             phone: phone,
             products: dataProducts
@@ -101,6 +122,7 @@ const NewOrders = () => {
         setProducts([]);
         setActiveNote(true);
         setValidateOrder(false);
+        setSelectCupon(null);
     }
 
     const templateOrder = ( item, index ) => {
@@ -295,6 +317,24 @@ const NewOrders = () => {
                                 />
                             </div>
                         </div>
+
+                        {
+                            cupons.length > 0
+                            &&
+                            <div className="p-field col-12">
+                                <label htmlFor="cupon">Cupón</label>
+                                <div>
+                                    <Dropdown 
+                                        value={selectCupon} 
+                                        onChange={(e) => setSelectCupon(e.value)}
+                                        options={cupons}
+                                        optionLabel="text"
+                                        className="w-12" 
+                                        size='small'
+                                    />
+                                </div>
+                            </div>
+                        }
 
                         <div className="p-field col-12" >
                             <label htmlFor="description">Nota para el pedido</label>
