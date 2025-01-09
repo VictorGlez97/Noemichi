@@ -149,7 +149,7 @@ const Cupon = () => {
                                         display: "inline-block", 
                                         transform: 'rotate(-3.5deg) translate(-45%,-150%)', 
                                         transformOrigin: 'center',
-                                        maxWidth: '20rem',
+                                        maxWidth: '18rem',
                                         // color: '#E71B6E',
                                         color: '#E66995'
                                     }}
@@ -163,8 +163,8 @@ const Cupon = () => {
                     {
                         condition !== null
                         &&
-                        <div className="flex justify-content-center">
-                            <p className="text-lg">* { condition.value }</p>
+                        <div className="flex justify-content-center" style={{ marginTop: '-3rem' }}>
+                            <p className="text-base col-6">* { condition.value }</p>
                         </div>
                     }
                 </>
