@@ -64,7 +64,7 @@ const Cupon = () => {
                     console.log( resCupons );
                     if ( resCupons.data.data.length > 0 ) {
                         setCupons(resCupons.data.data);
-                        toast.current.show({ severity: 'info', summary: 'Info', detail: 'Te doy una lista de tus cupones obtenidos', life: 3000 });
+                        // toast.current.show({ severity: 'info', summary: 'Info', detail: 'Te doy una lista de tus cupones obtenidos', life: 3000 });
                     }
                     return;
                 }
@@ -87,7 +87,7 @@ const Cupon = () => {
             .catch(error => {
                 // navigate('/menu');
                 console.log( error );
-                toast.current.show({ severity: 'error', summary: 'Error', detail: error, life: 3000 });
+                // toast.current.show({ severity: 'error', summary: 'Error', detail: error, life: 3000 });
             });
 
         }
@@ -109,61 +109,65 @@ const Cupon = () => {
             {
                 !cupon && cupons.length <= 0
                 &&
-                <span><i className="pi pi-spin pi-spinner-dotted" style={{ fontSize: '2rem' }}></i></span> 
+                <div className="flex justify-content-center">
+                    <span><i className="pi pi-spin pi-spinner-dotted" style={{ fontSize: '2rem' }}></i></span> 
+                </div>
             }
             
             {
                 cupon
                 &&
-                <div className="flex justify-content-center">
-                    <div 
-                        // className="flex flex-col items-center w-screen"
-                        style={{ 
-                            marginTop: '2rem', 
-                            position: 'relative',
-                            display: 'inline-block',
-                            textAlign: 'center'
-                        }}
-                    >
-                        <div className="flex justify-content-center z-0">
-                            <img 
-                                src={Cuponcito} 
-                                alt='Noemichis bakery' 
-                                style={{ 
-                                    width: '30rem', 
-                                    height: '20rem' 
-                                }} 
-                            />
+                <>
+                    <div className="flex justify-content-center">
+                        <div 
+                            className="flex flex-col items-center w-screen justify-content-center"
+                            style={{ 
+                                marginTop: '2rem', 
+                                position: 'relative',
+                                display: 'inline-block',
+                                textAlign: 'center'
+                            }}
+                        >
+                            <div className="flex justify-content-center z-0">
+                                <img 
+                                    src={Cuponcito} 
+                                    alt='Noemichis bakery' 
+                                    style={{ 
+                                        width: '30rem', 
+                                        height: '20rem' 
+                                    }} 
+                                />
+                            </div>
+                            <div className="z-1">
+                                <h3 
+                                    className="font-bold text-2xl" 
+                                    style={{ 
+                                        marginTop: '2.5rem',
+                                        position: 'absolute',
+                                        top: '50%',
+                                        left: '50%',
+                                        display: "inline-block", 
+                                        transform: 'rotate(-3.5deg) translate(-45%,-150%)', 
+                                        transformOrigin: 'center',
+                                        maxWidth: '20rem',
+                                        // color: '#E71B6E',
+                                        color: '#E66995'
+                                    }}
+                                > 
+                                    {/* prueba prueba prueba prueba prueba prueba prueba prueba prueba prueba prueba prueba */}
+                                    { cupon.text } 
+                                </h3> 
+                            </div>
                         </div>
-                        <div className="z-1">
-                            <h3 
-                                className="font-bold text-2xl" 
-                                style={{ 
-                                    marginTop: '2.5rem',
-                                    position: 'absolute',
-                                    top: '50%',
-                                    left: '50%',
-                                    display: "inline-block", 
-                                    transform: 'rotate(-3.5deg) translate(-45%,-150%)', 
-                                    transformOrigin: 'center',
-                                    maxWidth: '20rem',
-                                    // color: '#E71B6E',
-                                    color: '#E66995'
-                                }}
-                            > 
-                                {/* prueba prueba prueba prueba prueba prueba prueba prueba prueba prueba prueba prueba */}
-                                { cupon.text } 
-                            </h3> 
-                        </div>
-                    </div>
+                    </div> 
                     {
                         condition !== null
                         &&
                         <div className="flex justify-content-center">
-                            <span>* { condition.value }</span>
+                            <p className="text-lg">* { condition.value }</p>
                         </div>
                     }
-                </div> 
+                </>
             }
 
             {
