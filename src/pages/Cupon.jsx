@@ -164,7 +164,7 @@ const Cupon = () => {
                         condition !== null
                         &&
                         <div className="flex justify-content-center" style={{ marginTop: '-3rem' }}>
-                            <p className="text-base col-6">* { condition.value }</p>
+                            <p className="text-base md:col-6 sm:col-10">* { condition.value }</p>
                         </div>
                     }
                 </>
