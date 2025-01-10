@@ -22,16 +22,10 @@ export const Menu = () => {
 
     console.log( state );
 
-    // var toastCupon = state.cupon !== undefined && state.cupon !== null && state.cupon ? 
-
     const [socialMedia, setSocialMedia] = useState([]);
     const [products, setProducts] = useState([]);
     const [productOrder, setProductOrder] = useState([]);
-
-    // const [modalVisible, setModalVisible] = useState(false);
-    // const [image, setImage] = useState(null);
     const [modalCupon, setModalCupon] = useState(false);
-
     const [images, setImages] = useState(null);
     const galleria = useRef(null);
 
@@ -121,24 +115,6 @@ export const Menu = () => {
                     <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} />
                 </div>
 
-                {/* <div 
-                    className='col-12 flex justify-content-center'
-                    style={{ marginTop: '-1rem' }}
-                >
-                    {
-                        socialMedia.map(social => [
-                            <div 
-                                className='flex justify-content-center gap-2' 
-                                key={ social.idconfig }
-                                style={{ color: '#bb97ff' }}
-                            >
-                                <i className={ social.value2 } style={{ fontSize: '1.5rem' }}></i>
-                                <div className='text-xl'>{ social.value }</div>
-                            </div>
-                        ])
-                    }
-                </div> */}
-
                 <Tooltip target=".custom-target-icon" />
                 
                 <div className='flex justify-content-center'>
@@ -220,13 +196,6 @@ export const Menu = () => {
                         </div>
                     </Fieldset>
                 </div>
-
-
-                {/*<Dialog visible={modalVisible} onHide={() => setModalVisible(false)} style={{ width: '25rem' }}>
-                    <div>
-                    { image !== null && <img src={image} width="100%" alt="Imagen pancito"/> }
-                    </div>
-                    </Dialog>*/}
 
             </div>
             <Galleria 
