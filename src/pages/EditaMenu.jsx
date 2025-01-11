@@ -10,12 +10,14 @@ import { Button } from 'primereact/button';
 import { Checkbox } from 'primereact/checkbox';
 import { Card } from 'primereact/card';
 import { Dialog } from 'primereact/dialog';
+import { Dropdown } from 'primereact/dropdown';
 import { Toast } from 'primereact/toast';
 import { FileUpload } from 'primereact/fileupload';
 import { ProgressBar } from 'primereact/progressbar';
 import { Tag } from 'primereact/tag';
 
 import Table from '../components/editaMenu/Table';
+import api from '../services/noemichi';
 
 export const EditaMenu = () => {
 
@@ -33,6 +35,9 @@ export const EditaMenu = () => {
     const [images, setImages] = useState(null);
     const [imgProduct, setImgProduct] = useState(null);
 
+    const [types, setTypes] = useState(null);
+    const [selectedType, setSelectedType] = useState(null);
+
     // const [products, setProducts] = useState([]);
 
     const [modalProducts, setModalProducts] = useState(false);
@@ -42,13 +47,27 @@ export const EditaMenu = () => {
     // const fileUploadRef = useRef(null);
     // ARCHIVOS
 
+    useEffect(() => {
+        getTypes();
+    },[])
+
+    const getTypes = async () => {
+        const response = await api.get('product/types');
+        if ( response.data.data.length > 0 ) {
+            setTypes(response.data.data);
+        }
+    }
+
     const handleSubmit = async (e) => {
+
+        console.log( selectedType );
 
         const data = {
             name: name,
             description: description,
             price: price,
-            seccion: isTypeA ? 2 : 1
+            seccion: isTypeA ? 2 : 1,
+            type: selectedType.type !== undefined && selectedType.type !== null ? selectedType.type : selectedType
         }
 
         axios.post('https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/product', data)
@@ -62,6 +81,8 @@ export const EditaMenu = () => {
                 console.log( res.data );
                 console.log( res.data.data.idproduct );
 
+                console.log( images );
+
                 if ( images !== null ) {
 
                     // handleSubmitImg(res.data.idproduct);
@@ -72,7 +93,7 @@ export const EditaMenu = () => {
                 }
 
                 // responseSuccess(res.data.data);
-                // return;
+                return;
             }
 
             toast.current.show({ severity: 'error', summary: 'Error', detail: res.data.msg, life: 3000 });
@@ -106,6 +127,7 @@ export const EditaMenu = () => {
                     setPrice(product.price);
                     setIsTypeA(product.seccion === 2 ? true : false);
                     setUpdate(true);
+                    setSelectedType(product.type);
 
                     setImages(null);
                     setImgProduct(null);
@@ -170,7 +192,8 @@ export const EditaMenu = () => {
             name: name,
             description: description,
             price: price,
-            seccion: isTypeA ? 2 : 1
+            seccion: isTypeA ? 2 : 1,
+            type: selectedType
         }
 
         axios.put(`https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/product/${id}`, data)
@@ -212,6 +235,9 @@ export const EditaMenu = () => {
         setDescription('');
         setPrice(0);
         setIsTypeA(false);
+        setSelectedType(null);
+        setTypes(null);
+        getTypes();
     }
 
     const handleFileChange = (e) => {
@@ -335,6 +361,21 @@ export const EditaMenu = () => {
                                     onChange={(e) => setName(e.target.value)}
                                     className='md:col-12' 
                                 />
+                            </div>
+                        </div>
+
+                        <div className="p-field col-12">
+                            <label htmlFor="type"> Tipo </label>
+                            <div>
+                            <Dropdown 
+                                value={selectedType} 
+                                onChange={(e) => setSelectedType(e.value)} 
+                                options={types} 
+                                optionLabel="type"
+                                editable 
+                                placeholder="Selecciona un tipo de pancito, si no existe escribelo eje. Galletas" 
+                                className='md:col-12'
+                            />
                             </div>
                         </div>
 

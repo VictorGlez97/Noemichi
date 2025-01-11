@@ -18,6 +18,8 @@ export const Menu = () => {
   
     const navigate = useNavigate();
     const location = useLocation();
+    const galleria = useRef(null);
+    
     const { state } = location;
 
     console.log( state );
@@ -27,22 +29,25 @@ export const Menu = () => {
     const [productOrder, setProductOrder] = useState([]);
     const [modalCupon, setModalCupon] = useState(false);
     const [images, setImages] = useState(null);
-    const galleria = useRef(null);
-
+    const [types, setTypes] = useState([]); 
+    
     useEffect(() => {
 
-        axios.get('https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/product')
+        axios.get('https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/product/menu')
         .then(res => {
             if ( res.status === 200 ) {
                 console.log( res.data );
-                setProducts(res.data.data.filter(x => x.seccion === null || x.seccion === 1));
-                setProductOrder(res.data.data.filter(x => x.seccion === 2));
+                // setProducts(res.data.data.filter(x => x.seccion === null || x.seccion === 1));
+                // setProductOrder(res.data.data.filter(x => x.seccion === 2));
+                setProducts(res.data.data.products);
+                setProductOrder(res.data.data.pedidos);
             }
         })
         .catch(error => {
             console.log( error );
         })
 
+        getTypes();
         getSocialMedia();
 
         if (state !== undefined && state !== null && state.cupon !== undefined && state.cupon !== null && state.cupon) {
@@ -51,6 +56,14 @@ export const Menu = () => {
         }
 
     }, []);
+
+    const getTypes = async () => {
+        const response = await api.get('product/types');
+        console.log( response );
+        if ( response.data.data && response.data.data.length > 0 ) {
+            setTypes(response.data.data);
+        }
+    }
 
     const getSocialMedia = async () => {
 
@@ -112,7 +125,7 @@ export const Menu = () => {
         <>        
             <div>
                 <div className='col-12 flex justify-content-center'>
-                    <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} />
+                    {/* <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} /> */}
                 </div>
 
                 <Tooltip target=".custom-target-icon" />
@@ -129,71 +142,93 @@ export const Menu = () => {
 
                 <div className='flex justify-content-center'>
                     <Card className='md:col-8'>
+                        {
+                            (types !== undefined && types.length > 0) && (products !== undefined && products.length > 0)
+                            &&
                         <div className='p-grid'>
                             {
-                                products.map(product => (
-                                    <div 
-                                        className='flex justify-content-between custom-target-icon mb-3' 
-                                        key={ product.idproduct }
-                                        data-pr-tooltip={ product.description }
-                                        data-pr-position='top'
-                                    >
-                                        <div className='flex'>
-                                            <div 
-                                                className='mt-4 mr-3'
-                                                onClick={() => HandleOpenImage(product.image)}
-                                            >
-                                                { product.image !== null && <i className='pi pi-image' style={{ cursor: 'pointer', fontSize: '1.2rem', color: '#f0aed1' }}></i>}
-                                            </div>
-                                            <div>
-                                                <div style={{ lineHeight: '0px' }} >
-                                                    <h4 style={{ color: '#f0aed1' }}> { product.name } </h4>
-                                                    <span style={{ marginTop: '-1rem' }}> ({ product.description }) </span>
+                                types.map(type => (
+                                    <>
+                                        <div> { type.type } </div> 
+                                        <hr/>
+                                        {
+                                            products.map(product => (
+                                                type.type === product.type
+                                                &&
+                                                <div 
+                                                    className='flex justify-content-between custom-target-icon mb-3' 
+                                                    key={ product.idproduct }
+                                                    data-pr-tooltip={ product.description }
+                                                    data-pr-position='top'
+                                                >
+                                                    <div className='flex'>
+                                                        <div 
+                                                            className='mt-4 mr-3'
+                                                            onClick={() => HandleOpenImage(product.image)}
+                                                        >
+                                                            { product.image !== null && <i className='pi pi-image' style={{ cursor: 'pointer', fontSize: '1.2rem', color: '#f0aed1' }}></i>}
+                                                        </div>
+                                                        <div>
+                                                            <div style={{ lineHeight: '0px' }} >
+                                                                <h4 style={{ color: '#f0aed1' }}> { product.name } </h4>
+                                                                <span style={{ marginTop: '-1rem' }}> ({ product.description }) </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <p> $ { product.price } </p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <p> $ { product.price } </p>
-                                        </div>
-                                    </div>
+                                            ))
+                                        }
+                                    </>
                                 ))
                             }
                         </div>
+                        }
                     </Card>
                 </div>
 
                 <div className='flex justify-content-center mt-3'>
                     <Fieldset legend="Pedidos" className='sm:col-12 md:col-8'>
+                    {
+                        (types !== undefined && types.length > 0) && (products !== undefined && products.length > 0)
+                        &&
                     <div className='p-grid'>
                             {
-                                productOrder.map(product => (
-                                    <div 
-                                        className='flex justify-content-between custom-target-icon mb-3' 
-                                        key={ product.idproduct }
-                                        data-pr-tooltip={ product.description }
-                                        data-pr-position='top'
-                                    >
-                                        <div className='flex'>
-                                            <div 
-                                                className='mt-4 mr-3'
-                                                onClick={() => HandleOpenImage(product.image)}
-                                            >
-                                                { product.image !== null && <i className='pi pi-image' style={{ cursor: 'pointer', fontSize: '1.2rem', color: '#f0aed1' }}></i>}
-                                            </div>
-                                            <div>
-                                                <div style={{ lineHeight: '0px' }} >
-                                                    <h4 style={{ color: '#f0aed1' }}> { product.name } </h4>
-                                                    <span style={{ marginTop: '-1rem' }}> ({ product.description }) </span>
+                                types.map(type => (
+                                    productOrder.map(product => (
+                                        type.type === product.type
+                                        &&
+                                        <div 
+                                            className='flex justify-content-between custom-target-icon mb-3' 
+                                            key={ product.idproduct }
+                                            data-pr-tooltip={ product.description }
+                                            data-pr-position='top'
+                                        >
+                                            <div className='flex'>
+                                                <div 
+                                                    className='mt-4 mr-3'
+                                                    onClick={() => HandleOpenImage(product.image)}
+                                                >
+                                                    { product.image !== null && <i className='pi pi-image' style={{ cursor: 'pointer', fontSize: '1.2rem', color: '#f0aed1' }}></i>}
+                                                </div>
+                                                <div>
+                                                    <div style={{ lineHeight: '0px' }} >
+                                                        <h4 style={{ color: '#f0aed1' }}> { product.name } </h4>
+                                                        <span style={{ marginTop: '-1rem' }}> ({ product.description }) </span>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <div>
+                                                <p> $ { product.price } </p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p> $ { product.price } </p>
-                                        </div>
-                                    </div>
+                                    ))
                                 ))
                             }
                         </div>
+                        }
                     </Fieldset>
                 </div>
 
@@ -206,11 +241,11 @@ export const Menu = () => {
             <Dialog visible={modalCupon} onHide={() => setModalCupon(false)} style={{ width: '20rem' }}>
                 <div>
                     <div className='flex justify-content-center'>
-                        <img 
+                        {/* <img 
                             src={NoemichiBakery} 
                             alt='Noemichis bakery' 
                             style={{ width: '6rem', height: '6rem' }} 
-                        />
+                        /> */}
                     </div>
                     <div className='flex justify-content-center'>
                         <h5> ¿ Quieres ganarte un cupon ? </h5>
@@ -221,6 +256,13 @@ export const Menu = () => {
                     </div>
                 </div>
             </Dialog>
+
+            <div>
+                <pre>
+                    { types }
+                </pre>
+            </div>
+
         </>
     )
 }
