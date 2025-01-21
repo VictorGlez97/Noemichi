@@ -181,8 +181,8 @@ export const Menu = () => {
                                                         </div>
                                                         <div>
                                                             <div style={{ lineHeight: '0px' }} >
-                                                                <h4 style={{ color: '#f0aed1' }}> { product.name } </h4>
-                                                                <span style={{ marginTop: '-1rem' }}> ({ product.description }) </span>
+                                                                <span style={{ color: '#f0aed1' }}> { product.name } </span>
+                                                                <h4 style={{ marginTop: '-1rem' }}> ({ product.description }) </h4>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -231,8 +231,8 @@ export const Menu = () => {
                                                     </div>
                                                     <div>
                                                         <div style={{ lineHeight: '0px' }} >
-                                                            <h4 style={{ color: '#f0aed1' }}> { product.name } </h4>
-                                                            <span style={{ marginTop: '-1rem' }}> ({ product.description }) </span>
+                                                            <span style={{ color: '#f0aed1' }}> { product.name } </span>
+                                                            <h4 style={{ marginTop: '-1rem' }}> ({ product.description }) </h4>
                                                         </div>
                                                     </div>
                                                 </div>
