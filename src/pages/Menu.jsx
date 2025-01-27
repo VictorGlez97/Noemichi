@@ -14,6 +14,8 @@ import NoemichiBakery from '../assets/img/noemichis.png';
 import axios from 'axios';
 import api from '../services/noemichi'
 
+import Seccion from '../components/Menu/Seccion';
+
 export const Menu = () => {
   
     const navigate = useNavigate();
@@ -21,8 +23,6 @@ export const Menu = () => {
     const galleria = useRef(null);
     
     const { state } = location;
-
-    // console.log( state );
 
     const [socialMedia, setSocialMedia] = useState([]);
     const [products, setProducts] = useState([]);
@@ -53,18 +53,10 @@ export const Menu = () => {
         if ( res.status === 200 ) {
             console.log( res.data.data.productos );
             console.log(res.data.data.pedidos);
-
             setProducts(res.data.data.productos);
-            setProductOrder(res.data.data.pedidos);
-            
-            // console.log( setProducts );
-            // console.log( setProductOrder );
-            
+            setProductOrder(res.data.data.pedidos);            
             return;
         }
-        
-        console.log( res );
-
     }
 
     const getTypes = async () => {
@@ -108,15 +100,9 @@ export const Menu = () => {
         });
 
         setImages(imgs);
-        // console.log(images);
-
         const div = document.getElementById('gale');
-
-        console.log( div );
-
         div.classList.toggle('p-component-overlay');
         div.classList.toggle('p-component-overlay-enter');
-
     }
 
     const itemTemplate = (item) => {
@@ -135,7 +121,7 @@ export const Menu = () => {
         <>        
             <div>
                 <div className='col-12 flex justify-content-center'>
-                    {/* <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} /> */}
+                    <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} />
                 </div>
 
                 <Tooltip target=".custom-target-icon" />
@@ -150,53 +136,24 @@ export const Menu = () => {
                     />
                 </div> 
 
+                <div className='flex justify-content-center mt-3 mb-3 gap-6'>
+                    {
+                    socialMedia.map(social => (
+                        <div className='flex gap-1' style={{ color: '#ee925a' }}>
+                            <i className={ social.value2 }></i>
+                            <span className='text-base'> { social.value } </span>
+                        </div>    
+                    ))
+                    }
+                </div>
+
                 <div className='flex justify-content-center'>
                     <Card className='md:col-8'>
-                        {
-                            (types !== undefined && types.length > 0) && (products !== undefined && products.length > 0)
-                            &&
-                        <div className='p-grid'>
-                            {
-                                types.map(type => (
-                                    products.filter(prod => prod.type === type.type).length > 0 &&
-                                    <div key={type.type} className='mb-5'>
-                                        <div className='cursiva'> { type.type } </div> 
-                                        <hr/>
-                                        {
-                                            products.map(product => (
-                                                type.type === product.type
-                                                &&
-                                                <div 
-                                                    className='flex justify-content-between custom-target-icon mb-3' 
-                                                    key={ product.idproduct }
-                                                    data-pr-tooltip={ product.description }
-                                                    data-pr-position='top'
-                                                >
-                                                    <div className='flex'>
-                                                        <div 
-                                                            className='mt-4 mr-3'
-                                                            onClick={() => HandleOpenImage(product.image)}
-                                                        >
-                                                            { product.image !== null && <i className='pi pi-image' style={{ cursor: 'pointer', fontSize: '1.2rem', color: '#f0aed1' }}></i>}
-                                                        </div>
-                                                        <div>
-                                                            <div style={{ lineHeight: '0px' }} >
-                                                                <span style={{ color: '#f0aed1' }}> { product.name } </span>
-                                                                <h4 style={{ marginTop: '-1rem' }}> ({ product.description }) </h4>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <p> $ { product.price } </p>
-                                                    </div>
-                                                </div>
-                                            ))
-                                        }
-                                    </div>
-                                ))
-                            }
-                        </div>
-                        }
+                    {
+                        (types !== undefined && types.length > 0) && (products !== undefined && products.length > 0)
+                        &&
+                        <Seccion types={types} products={products} HandleOpenImage={HandleOpenImage} />
+                    }
                     </Card>
                 </div>
 
@@ -205,48 +162,8 @@ export const Menu = () => {
                     {
                         (types !== undefined && types.length > 0) && (products !== undefined && products.length > 0)
                         &&
-                    <div className='p-grid'>
-                            {
-                                types.map(type => (
-                                    productOrder.filter(prod => prod.type === type.type).length > 0 &&
-                                    <div key={type.type} className='mb-5'>
-                                        <div className='cursiva'> { type.type } </div> 
-                                        <hr/>
-                                    {
-                                        productOrder.map(product => (
-                                            type.type === product.type
-                                            &&
-                                            <div 
-                                                className='flex justify-content-between custom-target-icon mb-3' 
-                                                key={ product.idproduct }
-                                                data-pr-tooltip={ product.description }
-                                                data-pr-position='top'
-                                            >
-                                                <div className='flex'>
-                                                    <div 
-                                                        className='mt-4 mr-3'
-                                                        onClick={() => HandleOpenImage(product.image)}
-                                                    >
-                                                        { product.image !== null && <i className='pi pi-image' style={{ cursor: 'pointer', fontSize: '1.2rem', color: '#f0aed1' }}></i>}
-                                                    </div>
-                                                    <div>
-                                                        <div style={{ lineHeight: '0px' }} >
-                                                            <span style={{ color: '#f0aed1' }}> { product.name } </span>
-                                                            <h4 style={{ marginTop: '-1rem' }}> ({ product.description }) </h4>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <p> $ { product.price } </p>
-                                                </div>
-                                            </div>
-                                        ))
-                                    }
-                                    </div>
-                                ))
-                            }
-                        </div>
-                        }
+                        <Seccion types={types} products={productOrder} HandleOpenImage={HandleOpenImage} />
+                    }
                     </Fieldset>
                 </div>
 
@@ -259,28 +176,21 @@ export const Menu = () => {
             <Dialog visible={modalCupon} onHide={() => setModalCupon(false)} style={{ width: '20rem' }}>
                 <div>
                     <div className='flex justify-content-center'>
-                        {/* <img 
+                        <img 
                             src={NoemichiBakery} 
                             alt='Noemichis bakery' 
                             style={{ width: '6rem', height: '6rem' }} 
-                        /> */}
+                        />
                     </div>
                     <div className='flex justify-content-center'>
                         <h5> ¿ Quieres ganarte un cupon ? </h5>
                     </div>
                     <div className='flex justify-content-center gap-3'>
-                        <Button label='no' onClick={ () => { setModalCupon(false) }} />
-                        <Button label='si' onClick={ handleCupon } />
+                        <Button label='no' severity='danger' onClick={ () => { setModalCupon(false) }} />
+                        <Button label='si' severity='success' onClick={ handleCupon } />
                     </div>
                 </div>
             </Dialog>
-
-            {/* <div>
-                <pre>
-                    { types }
-                </pre>
-            </div> */}
-
         </>
     )
 }

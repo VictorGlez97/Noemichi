@@ -16,14 +16,14 @@ const MenuCupon = ({ products, types, HandleOpenImage }) => {
                     types.map(type => (
                         products.filter(prod => prod.type === type.type).length > 0 &&
                         <div key={type.type} className='mb-5'>
-                            <div className='cursiva'> { type.type } </div> 
+                            <div className="text-base"> { type.type } </div> 
                             <hr/>
                             {
                                 products.map(product => (
                                     type.type === product.type
                                     &&
                                     <div 
-                                        className='flex justify-content-between custom-target-icon mb-3' 
+                                        className='flex justify-content-between custom-target-icon mb-2' 
                                         key={ product.idproduct }
                                         data-pr-tooltip={ product.description }
                                         data-pr-position='top'
@@ -36,9 +36,9 @@ const MenuCupon = ({ products, types, HandleOpenImage }) => {
                                                 { product.image !== null && <i className='pi pi-image' style={{ cursor: 'pointer', fontSize: '1.2rem', color: '#f0aed1' }}></i>}
                                             </div>
                                             <div>
-                                                <div style={{ lineHeight: '0px' }} >
-                                                    <span style={{ color: '#f0aed1' }}> { product.name } </span>
-                                                    <h4 style={{ marginTop: '-1rem' }}> ({ product.description }) </h4>
+                                                <div style={{ lineHeight: '2px' }} >
+                                                    <h3 style={{ color: '#ee925a' }}> { product.name } </h3>
+                                                    <span className="text-sm"> ({ product.description }) </span>
                                                 </div>
                                             </div>
                                         </div>
