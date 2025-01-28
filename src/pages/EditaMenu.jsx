@@ -28,7 +28,10 @@ export const EditaMenu = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState(0);
-    const [isTypeA, setIsTypeA] = useState(false);
+    // const [isTypeA, setIsTypeA] = useState(false);
+    const [sections, setSections] = useState([]);
+    const [selectedSection, setSelectedSection] = useState(null);
+    const [isActive, setIsActive] = useState(true);
     const [update, setUpdate] = useState(false);
 
     // const [image, setImage] = useState(null);
@@ -49,6 +52,7 @@ export const EditaMenu = () => {
 
     useEffect(() => {
         getTypes();
+        getSections();
     },[])
 
     const getTypes = async () => {
@@ -58,16 +62,26 @@ export const EditaMenu = () => {
         }
     }
 
+    const getSections = () => {
+        setSections([
+            { id: 1, section: 'Producto' },
+            { id: 2, section: 'Por pedido' },
+            { id: 3, section: 'Pancito temporada' },
+        ]);
+    } 
+
     const handleSubmit = async (e) => {
 
         console.log( selectedType );
+        console.log( selectedSection );
 
         const data = {
             name: name,
             description: description,
             price: price,
-            seccion: isTypeA ? 2 : 1,
-            type: selectedType.type !== undefined && selectedType.type !== null ? selectedType.type : selectedType
+            seccion: selectedSection.id,
+            type: selectedType.type !== undefined && selectedType.type !== null ? selectedType.type : selectedType,
+            active: isActive
         }
 
         axios.post('https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/product', data)
@@ -125,9 +139,12 @@ export const EditaMenu = () => {
                     setName(product.name);
                     setDescription(product.description);
                     setPrice(product.price);
-                    setIsTypeA(product.seccion === 2 ? true : false);
+                    // setIsTypeA(product.seccion === 2 ? true : false);
+                    setIsActive(product.active);
                     setUpdate(true);
                     setSelectedType(product.type);
+
+                    setSelectedSection(sections.filter(x => x.id === product.seccion)[0]);
 
                     setImages(null);
                     setImgProduct(null);
@@ -192,8 +209,9 @@ export const EditaMenu = () => {
             name: name,
             description: description,
             price: price,
-            seccion: isTypeA ? 2 : 1,
-            type: selectedType
+            seccion: selectedSection.id,
+            type: selectedType,
+            active: isActive
         }
 
         axios.put(`https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/product/${id}`, data)
@@ -203,7 +221,7 @@ export const EditaMenu = () => {
                 responseSuccess('Producto actualizado');
                 // return;
 
-                if ( image !== null ) {
+                if ( images !== null ) {
                     handleSubmitImg(res.data.idproduct);
                 }
 
@@ -234,10 +252,14 @@ export const EditaMenu = () => {
         setName('');
         setDescription('');
         setPrice(0);
-        setIsTypeA(false);
+        // setIsTypeA(false);
         setSelectedType(null);
         setTypes(null);
         getTypes();
+        setSections(null);
+        getSections();
+        setSelectedSection(null);
+        setIsActive(true);
     }
 
     const handleFileChange = (e) => {
@@ -406,9 +428,28 @@ export const EditaMenu = () => {
                             </div>
                         </div>
 
-                        <div className="p-field-checkbox col-12">
+                        {/* <div className="p-field-checkbox col-12">
                             <Checkbox inputId="isTypeA" checked={isTypeA} onChange={(e) => setIsTypeA(e.checked)} />
                             <label htmlFor="isTypeA"> Por pedido </label>
+                        </div> */}
+
+                        <div className="p-field col-12">
+                            <label htmlFor="section"> Sección </label>
+                            <div>
+                            <Dropdown 
+                                value={selectedSection} 
+                                onChange={(e) => setSelectedSection(e.value)} 
+                                options={sections} 
+                                optionLabel="section"
+                                placeholder="Selecciona el tipo de sección del pancito" 
+                                className='md:col-12'
+                            />
+                            </div>
+                        </div>
+
+                        <div className="p-field-checkbox col-12">
+                            <Checkbox inputId="isActive" checked={isActive} onChange={(e) => setIsActive(e.checked)} />
+                            <label htmlFor="isActive"> Activo </label>
                         </div>
 
                         <div className='p-field col-12'>
@@ -441,7 +482,7 @@ export const EditaMenu = () => {
                 visible={modalProducts}
                 header="Pancitos" 
                 onHide={() => setModalProducts(false)} 
-                style={{ width: '50rem' }}
+                style={{ width: '70rem' }}
             >
                 <Table getProduct={getProduct} />
             </Dialog>

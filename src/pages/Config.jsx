@@ -1,12 +1,16 @@
+import { useEffect, useState } from 'react';
+import api from '../services/noemichi';
 
 import { InputText } from 'primereact/inputtext'
 import { Fieldset } from 'primereact/fieldset'
 import { Button } from 'primereact/button';
-import { useEffect, useState } from 'react';
-import api from '../services/noemichi';
+import { Checkbox } from 'primereact/checkbox';
+import { Toast } from 'primereact/toast';
 
 const Config = () => {
     
+    const toast = useRef(null);
+
     // const [socialMedia, setSocialMedia] = useState([]);
     const [configurations, setConfigurations] = useState([]);
 
@@ -33,17 +37,31 @@ const Config = () => {
     };
 
     const GuardaConfig = async ( configIndex, itemIndex, item ) => {
-        item.value = configurations[configIndex].configs[itemIndex].value;
-        const response = await api.put(`config/${item.idconfig}`, item);
-        console.log( response );
+        try {
+            
+            item.value = configurations[configIndex].configs[itemIndex].value;
+            const response = await api.put(`config/${item.idconfig}`, item);
+            console.log( response );
 
-        if ( response.data.data ) {
-            getConfigs();
+            if ( response.data.data ) {
+                
+                if ( response.data.status === 200 && !response.data.data.error ) {
+                    getConfigs();
+                    toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Configuración actualizada!', life: 3000 });
+                    return;   
+                }
+            }
+
+            toast.current.show({ severity: 'error', summary: 'Error', detail: res.data.data.mensaje, life: 3000 });
+
+        } catch (error) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: error, life: 3000 });
         }
     }
 
     return(
         <div className='flex justify-content-center'>
+            <Toast ref={toast} />
             <div className='flex-block justify-content-center col-6 gap-5'>
 
                 {
@@ -65,13 +83,32 @@ const Config = () => {
                                                 ></i>
                                             </span>
                                         </div>
-                                        <div>
-                                            <InputText 
-                                                className="p-inputtext-sm" 
-                                                value={config.configs[indexI].value} 
-                                                onChange={(e) => { handleInputChange( indexC, indexI, e.target.value ) }} 
-                                            />
-                                        </div>
+
+                                        {
+                                            itm.value3 === 'Text'
+                                            && 
+                                            <div>
+                                                <InputText 
+                                                    className="p-inputtext-sm" 
+                                                    value={config.configs[indexI].value} 
+                                                    onChange={(e) => { handleInputChange( indexC, indexI, e.target.value ) }} 
+                                                />
+                                            </div>
+                                        }
+
+                                        {
+                                            itm.value3 === 'Check'
+                                            &&
+                                            <div className='flex align-items-center gap-2'>
+                                                <Checkbox 
+                                                    inputId="isActive" 
+                                                    checked={config.configs[indexI].value === 'true' ? true : false} 
+                                                    onChange={(e) => { handleInputChange( indexC, indexI, e.checked.toString() ) }} 
+                                                />
+                                                <label htmlFor="isActive"> { config.configs[indexI].value2 } </label>
+                                            </div>
+                                        }
+                                        
                                         <div>
                                             <Button 
                                                 icon='pi pi-save' 

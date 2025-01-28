@@ -27,7 +27,21 @@ const Table = ({ getProduct }) => {
 
     const getStatus = (data) => {
         // console.log(data);
-        var status = data.seccion === 2 ? <Tag value="Por pedido" severity="Warning" /> : "";
+        var status = "";
+        
+        switch (data.seccion) {
+            case 2:
+                status = <Tag value="Por pedido" severity="warning" />;
+                break;
+            
+            case 3:
+                status = <Tag value="Pancito temporada" severity="info" />;
+                break;
+
+            default:
+                break;
+        }
+        
         return status;
     }
 

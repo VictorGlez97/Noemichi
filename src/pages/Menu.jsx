@@ -27,6 +27,7 @@ export const Menu = () => {
     const [socialMedia, setSocialMedia] = useState([]);
     const [products, setProducts] = useState([]);
     const [productOrder, setProductOrder] = useState([]);
+    const [productSeason, setProductSeason] = useState(null);
     const [modalCupon, setModalCupon] = useState(false);
     const [images, setImages] = useState(null);
     const [types, setTypes] = useState([]); 
@@ -51,8 +52,7 @@ export const Menu = () => {
         console.log( res );
 
         if ( res.status === 200 ) {
-            console.log( res.data.data.productos );
-            console.log(res.data.data.pedidos);
+            setProductSeason(res.data.data.temporada);
             setProducts(res.data.data.productos);
             setProductOrder(res.data.data.pedidos);            
             return;
@@ -147,6 +147,20 @@ export const Menu = () => {
                     }
                 </div>
 
+                {
+                    productSeason !== null && productSeason.length > 0 
+                    &&
+                    <div className='flex justify-content-center mt-3'>
+                        <Fieldset legend="Pancitos de temporada" className='sm:col-12 md:col-8'>
+                        {
+                            (types !== undefined && types.length > 0) && (productSeason !== undefined && productSeason.length > 0)
+                            &&
+                            <Seccion types={types} products={productSeason} HandleOpenImage={HandleOpenImage} />
+                        }
+                        </Fieldset>
+                    </div>
+                }
+
                 <div className='flex justify-content-center'>
                     <Card className='md:col-8'>
                     {
@@ -158,9 +172,9 @@ export const Menu = () => {
                 </div>
 
                 <div className='flex justify-content-center mt-3'>
-                    <Fieldset legend="Pedidos" className='sm:col-12 md:col-8'>
+                    <Fieldset legend="Por pedido" className='sm:col-12 md:col-8'>
                     {
-                        (types !== undefined && types.length > 0) && (products !== undefined && products.length > 0)
+                        (types !== undefined && types.length > 0) && (productOrder !== undefined && productOrder.length > 0)
                         &&
                         <Seccion types={types} products={productOrder} HandleOpenImage={HandleOpenImage} />
                     }
