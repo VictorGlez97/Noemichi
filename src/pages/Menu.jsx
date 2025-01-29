@@ -141,7 +141,7 @@ export const Menu = () => {
                 <div className='flex justify-content-center mt-3 mb-3 gap-6'>
                     {
                         socialMedia.map(social => (
-                            <div className='flex gap-2' style={{ color: '#ee925a' }} key={ social.title }>
+                            <div className='flex gap-2' style={{ color: '#FFF5EE' }} key={ social.title }>
                                 <i className={ `${social.value2}` } style={{ fontSize: '1.5rem' }}></i>
                                 <span className='text-xl'> { social.value } </span>
                             </div>    
