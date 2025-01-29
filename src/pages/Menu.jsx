@@ -27,7 +27,7 @@ export const Menu = () => {
     const [socialMedia, setSocialMedia] = useState([]);
     const [products, setProducts] = useState([]);
     const [productOrder, setProductOrder] = useState([]);
-    const [productSeason, setProductSeason] = useState(null);
+    const [productSeason, setProductSeason] = useState([]);
     const [modalCupon, setModalCupon] = useState(false);
     const [images, setImages] = useState(null);
     const [types, setTypes] = useState([]); 
@@ -52,6 +52,8 @@ export const Menu = () => {
         console.log( res );
 
         if ( res.status === 200 ) {
+            console.log(res.data.data.temporada);
+            
             setProductSeason(res.data.data.temporada);
             setProducts(res.data.data.productos);
             setProductOrder(res.data.data.pedidos);            
@@ -121,7 +123,7 @@ export const Menu = () => {
         <>        
             <div>
                 <div className='col-12 flex justify-content-center'>
-                    <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} />
+                    {/* <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} /> */}
                 </div>
 
                 <Tooltip target=".custom-target-icon" />
@@ -139,24 +141,60 @@ export const Menu = () => {
                 <div className='flex justify-content-center mt-3 mb-3 gap-6'>
                     {
                     socialMedia.map(social => (
-                        <div className='flex gap-1' style={{ color: '#ee925a' }}>
-                            <i className={ social.value2 }></i>
-                            <span className='text-base'> { social.value } </span>
+                        <div className='flex gap-2' style={{ color: '#ee925a' }} key={ social.title }>
+                            <i className={ `${social.value2}` } style={{ fontSize: '1.5rem' }}></i>
+                            <span className='text-xl'> { social.value } </span>
                         </div>    
                     ))
                     }
                 </div>
-
+                
                 {
-                    productSeason !== null && productSeason.length > 0 
+                    (productSeason !== undefined && productSeason !== null && productSeason.length > 0)
                     &&
-                    <div className='flex justify-content-center mt-3'>
-                        <Fieldset legend="Pancitos de temporada" className='sm:col-12 md:col-8'>
-                        {
-                            (types !== undefined && types.length > 0) && (productSeason !== undefined && productSeason.length > 0)
-                            &&
-                            <Seccion types={types} products={productSeason} HandleOpenImage={HandleOpenImage} />
-                        }
+                    <div className='flex justify-content-center mt-3 mb-3'>
+                        <Fieldset legend="Pancitos de temporada" className='sm:col-12 md:col-8' toggleable>
+                            <div className='p-grid'>
+                                {
+                                    types.map(type => (
+                                        products.filter(prod => prod.type === type.type).length > 0 &&
+                                        <div key={type.type} className='mb-5'>
+                                            <div className="text-base"> { type.type } </div> 
+                                            <hr/>
+                                            {
+                                                products.map(product => (
+                                                    type.type === product.type
+                                                    &&
+                                                    <div 
+                                                        className='flex justify-content-between custom-target-icon mb-2' 
+                                                        key={ product.idproduct }
+                                                        data-pr-tooltip={ product.description }
+                                                        data-pr-position='top'
+                                                    >
+                                                        <div className='flex'>
+                                                            <div 
+                                                                className='mt-4 mr-3'
+                                                                onClick={() => HandleOpenImage(product.image)}
+                                                            >
+                                                                { product.image !== null && <i className='pi pi-image' style={{ cursor: 'pointer', fontSize: '1.2rem', color: '#f0aed1' }}></i>}
+                                                            </div>
+                                                            <div>
+                                                                <div style={{ lineHeight: '2px' }} >
+                                                                    <h3 style={{ color: '#ee925a' }}> { product.name } </h3>
+                                                                    <span className="text-sm"> ({ product.description }) </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <p> $ { product.price } </p>
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
+                                    ))
+                                }
+                            </div>
                         </Fieldset>
                     </div>
                 }
@@ -172,7 +210,7 @@ export const Menu = () => {
                 </div>
 
                 <div className='flex justify-content-center mt-3'>
-                    <Fieldset legend="Por pedido" className='sm:col-12 md:col-8'>
+                    <Fieldset legend="Por pedido" className='sm:col-12 md:col-8' toggleable>
                     {
                         (types !== undefined && types.length > 0) && (productOrder !== undefined && productOrder.length > 0)
                         &&
@@ -190,11 +228,11 @@ export const Menu = () => {
             <Dialog visible={modalCupon} onHide={() => setModalCupon(false)} style={{ width: '20rem' }}>
                 <div>
                     <div className='flex justify-content-center'>
-                        <img 
+                        {/* <img 
                             src={NoemichiBakery} 
                             alt='Noemichis bakery' 
                             style={{ width: '6rem', height: '6rem' }} 
-                        />
+                        /> */}
                     </div>
                     <div className='flex justify-content-center'>
                         <h5> ¿ Quieres ganarte un cupon ? </h5>

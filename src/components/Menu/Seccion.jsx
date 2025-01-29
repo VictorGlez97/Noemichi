@@ -1,13 +1,6 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
-const MenuCupon = ({ products, types, HandleOpenImage }) => {
+const Seccion = ({ products, types, HandleOpenImage }) => {
     
-    const navigate = useNavigate();
-    
-    useEffect(() => {
-        navigate('/menu', { state: { message: 'Hola soy un cupon!', cupon: true } })
-    })
+    console.log( products );
 
     return(
         <>
@@ -56,4 +49,4 @@ const MenuCupon = ({ products, types, HandleOpenImage }) => {
     )
 }
 
-export default MenuCupon;
+export default Seccion;
