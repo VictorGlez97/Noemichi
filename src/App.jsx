@@ -65,6 +65,7 @@ const GuestRoutes = () => {
   return (
     <>
       <Routes>
+        <Route path="/" element={<Menu />} />
         <Route path="/login" element={<Login />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/menu/cupon" element={<MenuCupon />} />
