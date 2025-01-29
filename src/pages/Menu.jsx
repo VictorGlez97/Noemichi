@@ -23,7 +23,8 @@ export const Menu = () => {
     const galleria = useRef(null);
     
     const { state } = location;
-
+    
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
     const [socialMedia, setSocialMedia] = useState([]);
     const [products, setProducts] = useState([]);
     const [productOrder, setProductOrder] = useState([]);
@@ -33,6 +34,12 @@ export const Menu = () => {
     const [types, setTypes] = useState([]); 
     
     useEffect(() => {
+
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 600);
+        }
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
 
         getProducts();
         getTypes();
@@ -44,6 +51,7 @@ export const Menu = () => {
         }
 
     }, []);
+
 
     const getProducts = async () => {
 
@@ -141,7 +149,7 @@ export const Menu = () => {
                 <div className='flex justify-content-center mt-3 mb-3 gap-6'>
                     {
                         socialMedia.map(social => (
-                            <div className='flex gap-2' style={{ color: '#FFF5EE' }} key={ social.title }>
+                            <div className='flex gap-2' style={{ color: '#000000' }} key={ social.title }>
                                 <i className={ `${social.value2}` } style={{ fontSize: '1.5rem' }}></i>
                                 <span className='text-xl'> { social.value } </span>
                             </div>    
@@ -179,14 +187,14 @@ export const Menu = () => {
                                                                 { product.image !== null && <i className='pi pi-image' style={{ cursor: 'pointer', fontSize: '1.2rem', color: '#f0aed1' }}></i>}
                                                             </div>
                                                             <div>
-                                                                <div style={{ lineHeight: '2px' }} >
-                                                                    <h3 style={{ color: '#ee925a' }}> { product.name } </h3>
-                                                                    <span className="text-sm"> ({ product.description }) </span>
-                                                                </div>
+                                                            <div style={{ lineHeight: '0px' }}>
+                                                                <h3 style={{ color: '#ee925a' }}> { product.name } </h3>
+                                                                <span className="text-sm" style={{ display: "inline-block", width: isMobile ? '250px' : 'auto', whiteSpace: 'normal', lineHeight: '1rem', minHeight: '3rem' }}> ({ product.description }) </span>
                                                             </div>
                                                         </div>
+                                                        </div>
                                                         <div>
-                                                            <p> $ { product.price } </p>
+                                                            <p style={{ width: '4rem' }}> $ { product.price } </p>
                                                         </div>
                                                     </div>
                                                 ))

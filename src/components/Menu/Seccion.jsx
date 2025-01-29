@@ -1,5 +1,17 @@
+import { useEffect, useState } from "react";
+
 const Seccion = ({ products, types, HandleOpenImage }) => {
     
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 600);
+        }
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     console.log( products );
 
     return(
@@ -29,14 +41,14 @@ const Seccion = ({ products, types, HandleOpenImage }) => {
                                                 { product.image !== null && <i className='pi pi-image' style={{ cursor: 'pointer', fontSize: '1.2rem', color: '#f0aed1' }}></i>}
                                             </div>
                                             <div>
-                                                <div style={{ lineHeight: '2px' }} >
+                                                <div style={{ lineHeight: '0px' }}>
                                                     <h3 style={{ color: '#ee925a' }}> { product.name } </h3>
-                                                    <span className="text-sm"> ({ product.description }) </span>
+                                                    <span className="text-sm" style={{ display: "inline-block", width: isMobile ? '250px' : 'auto', whiteSpace: 'normal', lineHeight: '1rem', minHeight: '3rem' }}> ({ product.description }) </span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div>
-                                            <p> $ { product.price } </p>
+                                            <p style={{ width: '4rem' }}> $ { product.price } </p>
                                         </div>
                                     </div>
                                 ))
