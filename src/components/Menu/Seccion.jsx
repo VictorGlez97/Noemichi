@@ -48,7 +48,7 @@ const Seccion = ({ products, types, HandleOpenImage }) => {
                                             </div>
                                         </div>
                                         <div>
-                                            <p style={{ width: '4rem' }}> $ { product.price } </p>
+                                            <p style={{ width: '5rem' }}> $ { product.price } </p>
                                         </div>
                                     </div>
                                 ))
