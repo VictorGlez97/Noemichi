@@ -123,7 +123,7 @@ export const Menu = () => {
         <>        
             <div>
                 <div className='col-12 flex justify-content-center'>
-                    {/* <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} /> */}
+                    <img src={NoemichiBakery} alt='Noemichis bakery' style={{ width: '9rem', height: '9rem' }} />
                 </div>
 
                 <Tooltip target=".custom-target-icon" />
@@ -138,14 +138,14 @@ export const Menu = () => {
                     />
                 </div> 
 
-                <div className='flex justify-content-center mt-3 mb-3 gap-6'>
+                <div className='flex justify-content-center mt-3 mb-3 md:gap-6 sm:gap-4'>
                     {
-                    socialMedia.map(social => (
-                        <div className='flex gap-2' style={{ color: '#ee925a' }} key={ social.title }>
-                            <i className={ `${social.value2}` } style={{ fontSize: '1.5rem' }}></i>
-                            <span className='text-xl'> { social.value } </span>
-                        </div>    
-                    ))
+                        socialMedia.map(social => (
+                            <div className='flex gap-2' style={{ color: '#ee925a' }} key={ social.title }>
+                                <i className={ `${social.value2}` } style={{ fontSize: '1.5rem' }}></i>
+                                <span className='text-xl'> { social.value } </span>
+                            </div>    
+                        ))
                     }
                 </div>
                 
@@ -228,11 +228,11 @@ export const Menu = () => {
             <Dialog visible={modalCupon} onHide={() => setModalCupon(false)} style={{ width: '20rem' }}>
                 <div>
                     <div className='flex justify-content-center'>
-                        {/* <img 
+                        <img 
                             src={NoemichiBakery} 
                             alt='Noemichis bakery' 
                             style={{ width: '6rem', height: '6rem' }} 
-                        /> */}
+                        />
                     </div>
                     <div className='flex justify-content-center'>
                         <h5> ¿ Quieres ganarte un cupon ? </h5>
