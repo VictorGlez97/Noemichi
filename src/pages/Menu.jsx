@@ -35,12 +35,6 @@ export const Menu = () => {
     
     useEffect(() => {
 
-        const handleResize = () => {
-            setIsMobile(window.innerWidth < 600);
-        }
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-
         getProducts();
         getTypes();
         getSocialMedia();
@@ -49,6 +43,12 @@ export const Menu = () => {
             setModalCupon(true);
             state.cupon = false;
         }
+
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 600);
+        }
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
 
     }, []);
 
