@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
                 password 
             }
             const response = await api.post('user/login', data)
-            // console.log( response );
+            // //console.log( response );
 
             if ( !response.data.error ) {
                 setUser(response.data.user);
@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
 
             return !response.data.error;
         } catch (error) {
-            console.log( error );
+            //console.log( error );
             return false;
         }
     }

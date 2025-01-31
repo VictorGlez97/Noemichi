@@ -39,7 +39,7 @@ const Table = ({ getCupon }) => {
 
     const formatInitDate = (data) => {
         const date = moment(data.start).format('DD/MM/YYYY HH:mm');
-        console.log(date);
+        //console.log(date);
         
         return date;
     }

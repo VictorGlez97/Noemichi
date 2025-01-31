@@ -116,9 +116,9 @@ const Orders = () => {
     }
 
     const getDataOrder = async ( idOrder ) => {
-        console.log( idOrder );
+        //console.log( idOrder );
         const response = await api.get(`order/${idOrder}`);
-        console.log( response );
+        //console.log( response );
 
         if ( !response.data.data ) {
             return;

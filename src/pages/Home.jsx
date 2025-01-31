@@ -4,7 +4,7 @@ const Home = () => {
 
     const { user } = useAuth();
 
-    console.log( user );
+    //console.log( user );
 
     return(
         <div className="flex justify-content-center">

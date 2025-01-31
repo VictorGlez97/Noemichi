@@ -22,7 +22,7 @@ const Config = () => {
 
         const response = await api.get('config/menu');
 
-        console.log( response );
+        //console.log( response );
 
         if ( response.data !== undefined && response.data.data !== undefined && !response.data.data.error ) {
             setConfigurations(response.data.data);
@@ -41,7 +41,7 @@ const Config = () => {
             
             item.value = configurations[configIndex].configs[itemIndex].value;
             const response = await api.put(`config/${item.idconfig}`, item);
-            console.log( response );
+            //console.log( response );
 
             // if ( response.data.data ) {
                 

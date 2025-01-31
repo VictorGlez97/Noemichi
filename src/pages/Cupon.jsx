@@ -34,7 +34,7 @@ const Cupon = () => {
         getConditionCupons();
 
         const timmer = setTimeout(async () => {
-            console.log( 'Ejecutando timmer' );
+            //console.log( 'Ejecutando timmer' );
             await SetUserCupon();
         }, 1000);
 
@@ -55,13 +55,13 @@ const Cupon = () => {
         if ( cupon === null ) {
 
             const res = await api.post('cupon/random', { ipDevice: ip })
-            console.log( res );
+            //console.log( res );
 
             if ( res.status === 200 ) {
                 
                 if ( res.data.cupons !== null && res.data.cupons !== undefined && res.data.cupons ) {
                     const resCupons = await api.post('cupon/device', { ipDevice: ip })
-                    console.log( resCupons );
+                    //console.log( resCupons );
                     if ( resCupons.data.data.length > 0 ) {
                         setCupons(resCupons.data.data);
                         // toast.current.show({ severity: 'info', summary: 'Info', detail: 'Te doy una lista de tus cupones obtenidos', life: 3000 });
@@ -86,7 +86,7 @@ const Cupon = () => {
             })
             .catch(error => {
                 // navigate('/menu');
-                console.log( error );
+                //console.log( error );
                 // toast.current.show({ severity: 'error', summary: 'Error', detail: error, life: 3000 });
             });
 

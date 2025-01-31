@@ -64,12 +64,12 @@ const EditaCupones = () => {
             uses: number
         }
 
-        console.log( data );
+        //console.log( data );
 
         axios.post('https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/cupon', data)
         .then(res => {
 
-            console.log( res );
+            //console.log( res );
 
             if ( res.status === 200 ) {
                 responseSuccess('Cupón guardado');
@@ -79,7 +79,7 @@ const EditaCupones = () => {
             responseError(res.data.msg);
         })
         .catch(error => {
-            console.log( error );
+            //console.log( error );
             responseError(error)
 1        })
 
@@ -102,7 +102,7 @@ const EditaCupones = () => {
 
         const response = await api.put(`cupon/${idCupon}`, data);
 
-        console.log(response);
+        //console.log(response);
         
         if ( response.data.data === undefined || response.data.data === null ) {
             responseError('No fue posible actualizar el cupon'); 
@@ -130,7 +130,7 @@ const EditaCupones = () => {
         }
 
         const cupons = response.data.data[0];
-        console.log( cupons );
+        //console.log( cupons );
 
         setIdCupon( cupons.idcupon );
         setCupon( cupons.text );

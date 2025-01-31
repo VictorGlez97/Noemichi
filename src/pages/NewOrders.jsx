@@ -45,12 +45,12 @@ const NewOrders = () => {
     }, []);
 
     // useEffect(() => {
-    //     console.log(orderProducts);
+    //     //console.log(orderProducts);
     // }, [orderProducts])
 
     const getProducts = async () => {
         const dataProducts = await api.get('product');
-        console.log( dataProducts );
+        //console.log( dataProducts );
         setProducts(dataProducts.data.data);
     }
 
@@ -99,7 +99,7 @@ const NewOrders = () => {
         };
 
         const response = await api.post('order', data);
-        console.log( response );
+        //console.log( response );
         
         if ( !response.data.data || response.data.data.length <= 0 ) {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'No fue posible crear el pedido', life: 3000 });
@@ -126,12 +126,12 @@ const NewOrders = () => {
     }
 
     const templateOrder = ( item, index ) => {
-        console.log( item );
-        console.log( index );
+        //console.log( item );
+        //console.log( index );
         
         const deleteProduct = ( index ) => {
-            console.log( index );
-            console.log( orderProducts );
+            //console.log( index );
+            //console.log( orderProducts );
             orderProducts.splice( index );
         }
 
@@ -182,7 +182,7 @@ const NewOrders = () => {
             return;
         }
 
-        console.log( selectProduct );
+        //console.log( selectProduct );
 
         orderProducts.push({ 
             index: orderProducts.length,
@@ -200,8 +200,8 @@ const NewOrders = () => {
     }
 
     const deleteProduct = ( index ) => {
-        console.log( index );
-        console.log( orderProducts );
+        //console.log( index );
+        //console.log( orderProducts );
         // const oProducts = orderProducts.splice( index );
         // setOrderProducts(oProducts);
 
@@ -219,8 +219,8 @@ const NewOrders = () => {
         // })
 
         const deleteProduct = ( index ) => {
-            console.log( index );
-            console.log( orderProducts );
+            //console.log( index );
+            //console.log( orderProducts );
             orderProducts.splice( index );
         }
 

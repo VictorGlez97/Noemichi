@@ -12,7 +12,7 @@ const Seccion = ({ products, types, HandleOpenImage }) => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    console.log( products );
+    //console.log( products );
 
     return(
         <>

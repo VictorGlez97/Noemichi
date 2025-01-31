@@ -57,10 +57,10 @@ export const Menu = () => {
 
         const res = await api.get('product/menu');
     
-        console.log( res );
+        //console.log( res );
 
         if ( res.status === 200 ) {
-            console.log(res.data.data.temporada);
+            //console.log(res.data.data.temporada);
             
             setProductSeason(res.data.data.temporada);
             setProducts(res.data.data.productos);
@@ -71,7 +71,7 @@ export const Menu = () => {
 
     const getTypes = async () => {
         const response = await api.get('product/types');
-        console.log( response );
+        //console.log( response );
         if ( response.data.data && response.data.data.length > 0 ) {
             setTypes(response.data.data);
         }
@@ -81,7 +81,7 @@ export const Menu = () => {
 
         const response = await api.get('config?type=SOCIALMEDIA');
         if ( response.data.data !== undefined ) {
-            console.log( response.data.data );
+            //console.log( response.data.data );
             setSocialMedia(response.data.data);            
         }
 

@@ -16,17 +16,17 @@ const Table = ({ getProduct }) => {
         axios.get('https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/product')
         .then(res => {
             if ( res.status === 200 ) {
-                console.log( res.data );
+                //console.log( res.data );
                 setProducts(res.data.data);
             }
         })
         .catch(error => {
-            console.log( error );
+            //console.log( error );
         })
     }, []);
 
     const getStatus = (data) => {
-        // console.log(data);
+        // //console.log(data);
         var status = "";
         
         switch (data.seccion) {
@@ -46,7 +46,7 @@ const Table = ({ getProduct }) => {
     }
 
     const getBtnEdit = (data) => {
-        // console.log(data);
+        // //console.log(data);
         return <Button icon='pi pi-pencil' size='small' text onClick={() => { getProduct(data.idproduct) }} />
     }
 

@@ -72,8 +72,8 @@ export const EditaMenu = () => {
 
     const handleSubmit = async (e) => {
 
-        console.log( selectedType );
-        console.log( selectedSection );
+        //console.log( selectedType );
+        //console.log( selectedSection );
 
         const data = {
             name: name,
@@ -87,15 +87,15 @@ export const EditaMenu = () => {
         axios.post('https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/product', data)
         .then(res => {
 
-            console.log( res );
+            //console.log( res );
 
             if ( res.status === 200 ) {
                 responseSuccess('Producto guardado');
 
-                console.log( res.data );
-                console.log( res.data.data.idproduct );
+                //console.log( res.data );
+                //console.log( res.data.data.idproduct );
 
-                console.log( images );
+                //console.log( images );
 
                 if ( images !== null ) {
 
@@ -113,7 +113,7 @@ export const EditaMenu = () => {
             toast.current.show({ severity: 'error', summary: 'Error', detail: res.data.msg, life: 3000 });
         })
         .catch(error => {
-            console.log( error );
+            //console.log( error );
             toast.current.show({ severity: 'error', summary: 'Error', detail: error, life: 3000 });
         })
 
@@ -121,14 +121,14 @@ export const EditaMenu = () => {
 
     const getProduct = async ( idProduct ) => {
 
-        console.log( fileupd );
+        //console.log( fileupd );
 
         setModalProducts(false);
         axios.get(`https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/product/${idProduct}`)
         .then(res => {
 
-            console.log( res.status );
-            console.log( res.data );
+            //console.log( res.status );
+            //console.log( res.data );
 
             if ( res.status === 200 ) {
                 if ( res.data.data.length === 1 ) {
@@ -164,7 +164,7 @@ export const EditaMenu = () => {
 
         })
         .catch(error => {
-            console.log( error );
+            //console.log( error );
         })
 
     }
@@ -181,12 +181,12 @@ export const EditaMenu = () => {
 
         const blob = new Blob([byteArray], { type: mimeType });
 
-        console.log( blob );
+        //console.log( blob );
 
         const newFile = new File([byteArray], fileName, {type: mimeType})
         newFile.objectURL = URL.createObjectURL(blob);
 
-        console.log( newFile );
+        //console.log( newFile );
 
         fileupd.current.setFiles((prevFiles) => [...prevFiles, newFile])
 
@@ -229,7 +229,7 @@ export const EditaMenu = () => {
 
         })
         .catch(error => {
-            console.log( error );
+            //console.log( error );
         })
 
     }
@@ -274,7 +274,7 @@ export const EditaMenu = () => {
             formData.append('image', image);
             formData.append('idproduct', idproduct);
     
-            console.log( formData );
+            //console.log( formData );
     
             await axios.post('https://pruebanode-victorglez97-victorglez97s-projects.vercel.app/api/v1/product/img', formData, {
                 headers: {
@@ -282,25 +282,25 @@ export const EditaMenu = () => {
                 }
             })
             .then(res => {
-                console.log( res );
+                //console.log( res );
                 // responseSuccess();
             })
             .catch(error => {
-                console.log( error );
+                //console.log( error );
             })
 
         } catch (error) {
-            console.log( error );
+            //console.log( error );
         }
     }
 
     // const InvoiceUploadHandler = ({ files }) => {
     //     try {
             
-    //         console.log( files );
+    //         //console.log( files );
 
     //     } catch (error) {
-    //         console.log(error);
+    //         //console.log(error);
     //     }
     // }
 
@@ -324,20 +324,20 @@ export const EditaMenu = () => {
     const onUpload = (e) => {
 
         let files = e.files;
-        console.log( files );
+        //console.log( files );
 
     }
 
     const onSelect = (e) => {
 
         let files = e.files;
-        console.log( files );
+        //console.log( files );
 
         var arrayImages = [];
 
         var count = 0;
         files.map(itm => {
-            // console.log( itm );
+            // //console.log( itm );
             arrayImages.push({ id: count, img: itm })
             count++;
         });
@@ -348,14 +348,14 @@ export const EditaMenu = () => {
 
     const onRemove = (e) => {
         
-        console.log( images );
+        //console.log( images );
 
-        console.log( e.file.name );
+        //console.log( e.file.name );
 
-        // images.map(itm => { console.log(itm.img.name); })
+        // images.map(itm => { //console.log(itm.img.name); })
 
         var arrayImages = images.filter((itm) => itm.img.name !== e.file.name);
-        console.log( arrayImages );
+        //console.log( arrayImages );
 
         setImages(arrayImages);
 
