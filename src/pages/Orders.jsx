@@ -11,6 +11,7 @@ import { Dropdown } from "primereact/dropdown";
 import moment from "moment";
 import { Dialog } from "primereact/dialog";
 import { Tag } from "primereact/tag";
+import Info from "../components/Orders/Info";
 
 const Orders = () => {
     
@@ -127,6 +128,10 @@ const Orders = () => {
         setModalInfo(true);
     }
 
+    const HandleCloseModal= () => {
+        setModalInfo(false);
+    }
+
     return(
         <>
             <div className="flex justify-content-center mt-4">
@@ -199,9 +204,7 @@ const Orders = () => {
                 onHide={() => setModalInfo(false)} 
                 style={{ width: '55rem' }}
             >
-                <div>
-                    Info
-                </div>
+                <Info info={infoOrder} HandleCloseModal={HandleCloseModal} />
             </Dialog>
         </>
     )
