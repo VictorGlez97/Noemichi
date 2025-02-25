@@ -27,12 +27,19 @@ import NewOrders from "./pages/NewOrders";
 import Orders from "./pages/Orders";
 import Login from "./pages/Login";
 import Error from "./pages/Error";
+import { useEffect } from "react";
 
 function App() {
 
-  const { user } = useAuth();
+  const { user, searchUser } = useAuth();
 
   // let location = useLocation();
+
+  useEffect(() => {
+    if ( user === null || user === undefined ) {
+      searchUser();
+    }
+  })
 
   return (
     <>

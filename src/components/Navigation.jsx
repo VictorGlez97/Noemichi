@@ -6,11 +6,28 @@ import { useAuth } from './Context';
 import NoemichiBakery from '../assets/img/noemichis.png';
 import { Button } from 'primereact/button';
 import { Badge } from 'primereact/badge';
+import { useEffect, useState } from 'react';
+import api from '../services/noemichi';
 
 const Navigation = () => {
 
     const navigate = useNavigate();
     const { logout } = useAuth();
+
+    const [numOrders, setNumOrders] = useState(0);
+
+    useEffect(() => {
+        ObtenerOrdenes();
+    }, [])
+
+    const ObtenerOrdenes = async () => {
+        const res = await api.post('order/number');
+        console.log( res );
+
+        if ( !res.data.error ) {
+            setNumOrders(parseInt(res.data.data[0].pedidos))
+        }
+    }
 
     const start = <img alt='logo' src={ NoemichiBakery } height='45' onClick={() => { navigate('/') }}></img>;
 
@@ -54,7 +71,11 @@ const Navigation = () => {
                 size='small'
                 onClick={() => { navigate('/pedidos') }}
             >
-                <Badge value='8' severity='danger'></Badge>
+                {
+                    numOrders > 0
+                    &&
+                    <Badge value={numOrders} severity='danger'></Badge>
+                }
             </Button>
             <Button 
                 icon='pi pi-power-off' 

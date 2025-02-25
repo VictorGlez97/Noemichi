@@ -17,6 +17,8 @@ export const AuthProvider = ({ children }) => {
             // //console.log( response );
 
             if ( !response.data.error ) {
+                sessionStorage.setItem('user', JSON.stringify(response.data.user));
+                // console.log( localStorage );
                 setUser(response.data.user);
             }
 
@@ -31,8 +33,16 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
     }
 
+    const searchUser = () => {
+        const userLocal = sessionStorage.getItem('user');
+        if ( userLocal !== null && userLocal !== undefined ) {
+            console.log( userLocal );
+            setUser(JSON.parse(userLocal));
+        }
+    }
+
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user, login, logout, searchUser }}>
             {children}
         </AuthContext.Provider>
     )
