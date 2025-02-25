@@ -83,7 +83,7 @@ const Navigation = () => {
                 severity='help' 
                 size='small' 
                 aria-label='salir'
-                onClick={logout} 
+                onClick={() => { logout(); navigate('/login') }} 
             />
         </div>
     )
