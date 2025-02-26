@@ -106,8 +106,12 @@ const NewOrders = () => {
             return;
         }
 
+        const responseEmail = await api.post('order/email', response.data.data);
+        console.log( responseEmail );
+
         toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Se ha creado el pedido', life: 3000 });
         cleanInpts();
+
 
     }
 
@@ -123,6 +127,7 @@ const NewOrders = () => {
         setActiveNote(true);
         setValidateOrder(false);
         setSelectCupon(null);
+        getProducts();
     }
 
     const templateOrder = ( item, index ) => {
@@ -278,7 +283,7 @@ const NewOrders = () => {
             <Toast ref={toast} />
 
             <div className='flex justify-content-center'>
-                <Card title='Pedido' className='sm:col-12 md:col-7'>
+                <Card title='Pedido' className='md:col-7 sm:col-12'>
 
                     <div>
                         <div className="p-field col-12">
@@ -288,7 +293,7 @@ const NewOrders = () => {
                                     id="name" 
                                     value={name} 
                                     onChange={(e) => setName(e.target.value)}
-                                    className='md:col-12' 
+                                    className='md:col-12 sm:w-full' 
                                 />
                             </div>
                         </div>
@@ -300,7 +305,7 @@ const NewOrders = () => {
                                     id="phone" 
                                     value={phone} 
                                     onChange={(e) => setPhone(e.target.value)}
-                                    className='md:col-12' 
+                                    className='md:col-12 sm:w-full' 
                                 />
                             </div>
                         </div>
@@ -313,7 +318,7 @@ const NewOrders = () => {
                                     value={deliver} 
                                     onChange={(e) => setDeliver(e.value)} 
                                     rows={5}
-                                    className='md:col-12'
+                                    className='md:col-12 sm:w-full'
                                 />
                             </div>
                         </div>
@@ -451,7 +456,7 @@ const NewOrders = () => {
             </div>
             
             <Dialog header='Confirmación de pedido' visible={validateOrder} style={{ width: '40vw' }}>
-                <div className="flex justify-content-around mb-4">
+                <div className="md:flex sm:flex-column md:justify-content-around mb-4">
                     <div>
 
                         <div className="mt-1 mb-2">
@@ -478,7 +483,7 @@ const NewOrders = () => {
                                 orderProducts.length > 0
                                 &&
                                 orderProducts.map(product => (
-                                    <div className="text-lg font-bold">
+                                    <div className="text-lg font-bold" key={product.product}>
                                         -
                                         {
                                             product.number > 1
