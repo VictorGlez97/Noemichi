@@ -66,6 +66,26 @@ button[aria-label="Cancel"] {
   font-style: normal;
 } 
 
+.nieve {
+  position: absolute;
+  top: -10px;
+  background-color: #fff;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  opacity: 0.0;
+  animation: caer linear infinite;
+}
+
+@keyframes caer {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
