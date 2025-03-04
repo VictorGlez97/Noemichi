@@ -27,17 +27,21 @@ import NewOrders from "./pages/NewOrders";
 import Orders from "./pages/Orders";
 import Login from "./pages/Login";
 import Error from "./pages/Error";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
 
+  // const [movil, setMovil] = useState(false);
   const { user, searchUser } = useAuth();
 
   // let location = useLocation();
 
   useEffect(() => {
-    if ( user === null || user === undefined ) {
-      searchUser();
+
+    if (!(/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent))) {
+      if ( user === null || user === undefined ) {
+        searchUser();
+      }
     }
   })
 
